@@ -9,7 +9,7 @@ public class HibernateUtil {
 
 	public static EntityManager getEntityManager() {
 		if(entityManagerFactory == null) {
-			entityManagerFactory = Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
+			entityManagerFactory = Persistence.createEntityManagerFactory("sportas");
 		}
 		return entityManagerFactory.createEntityManager();
 	}
