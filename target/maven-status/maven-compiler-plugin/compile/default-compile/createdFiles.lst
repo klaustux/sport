@@ -1,0 +1,6 @@
+lt/eimis/persistence/HibernateUtil.class
+lt/eimis/bean/LeagueBean.class
+lt/eimis/entity/League.class
+lt/eimis/entity/TeamLeague.class
+lt/eimis/entity/SportConstants.class
+lt/eimis/editor/LeagueEditor.class
