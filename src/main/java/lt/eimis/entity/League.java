@@ -1,22 +1,22 @@
 package lt.eimis.entity;
 
-import javax.persistence.Basic;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="leagues")
 public class League {
+	@Id
+	@Column(name="league_id")
 	private int leagueId;
+	@Column(name = "league_name")
 	private String leagueName;
+	@Column(name = "league_sport_id")
 	private int leagueSportId;
 
-	@Id
-	@GeneratedValue
-	@Column(name = "league_id", nullable = false)
 	public int getLeagueId() {
 		return leagueId;
 	}
@@ -25,8 +25,6 @@ public class League {
 		this.leagueId = leagueId;
 	}
 
-	@Basic
-	@Column(name = "league_name", nullable = false, length = 50)
 	public String getLeagueName() {
 		return leagueName;
 	}
@@ -35,8 +33,6 @@ public class League {
 		this.leagueName = leagueName;
 	}
 
-	@Basic
-	@Column(name = "league_sport_id", nullable = false)
 	public int getLeagueSportId() {
 		return leagueSportId;
 	}

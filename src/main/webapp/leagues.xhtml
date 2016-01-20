@@ -13,10 +13,13 @@
     <h1>List leagues</h1>
 
     <h:form id="form">
-        <p:dataList value="#{leagueView.leagues}" var="league" type="ordered">
-            #{league.leagueName}
-        </p:dataList>
+        <p:editor value="#{leagueBean.string}"></p:editor>
     </h:form>
+
+    <h:dataTable value="#{leagueBean.leagues}" var="league">
+        <h:column>#{league.leagueName}</h:column>
+        <h:column>#{league.leagueId}</h:column>
+    </h:dataTable>
 
 </h:body>
 </html>
