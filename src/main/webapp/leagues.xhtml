@@ -10,16 +10,13 @@
 <h:head>
 </h:head>
 <h:body>
-   <h1>List leagues</h1>
+    <h1>List leagues</h1>
 
-   <h:form id="form">
-      <p:dataList value="#{leagueView.leagues}" var="league" type="ordered">
-         <f:facet name="header">
-            Lygos
-         </f:facet>
-         #{league.leagueId}, #{league.leagueName}
-      </p:dataList>
-   </h:form>
+    <h:form id="form">
+        <p:dataList value="#{leagueView.leagues}" var="league" type="ordered">
+            #{league.leagueName}
+        </p:dataList>
+    </h:form>
 
 </h:body>
 </html>

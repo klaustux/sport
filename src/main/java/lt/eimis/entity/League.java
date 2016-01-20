@@ -76,4 +76,13 @@ public class League {
 		result = 31 * result + leagueSportId;
 		return result;
 	}
+
+	public League() {
+	}
+
+	public League(int leagueId, String leagueName, int leagueSportId) {
+		this.leagueId = leagueId;
+		this.leagueName = leagueName;
+		this.leagueSportId = leagueSportId;
+	}
 }
