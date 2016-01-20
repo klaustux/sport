@@ -4,12 +4,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public enum HibernateUtil {
+public enum PersistenceManager {
 	INSTANCE;
 
 	private EntityManagerFactory emFactory;
 
-	private HibernateUtil() {
+	private PersistenceManager() {
 		emFactory = Persistence.createEntityManagerFactory("sportas");
 	}
 
