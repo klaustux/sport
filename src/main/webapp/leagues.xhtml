@@ -10,18 +10,15 @@
 <h:head>
 </h:head>
 <h:body>
-   <h1>Hello World PrimeFaces</h1>
+   <h1>List leagues</h1>
 
-   <h:form>
-      <p:dataGrid var="league" value="#{leagueBean.leagues}" columns="3" rows="12">
-         <p:column>
-            <p:panel header="#{league.id}">
-               <h:panelGrid columns="1">
-                  <h:outputText value="#{league.name}" />
-               </h:panelGrid>
-            </p:panel>
-         </p:column>
-      </p:dataGrid>
+   <h:form id="form">
+      <p:dataList value="#{leagueView.leagues}" var="league" type="ordered">
+         <f:facet name="header">
+            Lygos
+         </f:facet>
+         #{league.leagueId}, #{league.leagueName}
+      </p:dataList>
    </h:form>
 
 </h:body>

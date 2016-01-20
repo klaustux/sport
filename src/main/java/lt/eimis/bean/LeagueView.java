@@ -21,9 +21,10 @@ public class LeagueView implements Serializable{
 		league.setLeagueName("LKL");
 		league.setLeagueSportId(SportConstants.SPORT_ID_BASKETBALL);
 		leagueList.add(league);
-		league.setLeagueId(101);
-		league.setLeagueName("NKL");
-		leagueList.add(league);
+		League league2 = new League();
+		league2.setLeagueId(101);
+		league2.setLeagueName("NKL");
+		leagueList.add(league2);
 	}
 
 	public List<League> getLeagues() {
