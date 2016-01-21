@@ -6,4 +6,6 @@ package lt.eimis.entity;
 public class SportConstants {
 	public static final int SPORT_ID_BASKETBALL = 0;
 	public static final int SPORT_ID_FOOTBALL = 1;
+	public static final String SPORT_NAME_BASKETBALL = "Basketball";
+	public static final String SPORT_NAME_FOOTBALL = "Football";
 }
