@@ -20,7 +20,7 @@ public class TeamDAO {
 	public void save(Team team) {
 		EntityManager entityManager =  HibernateUtil.getEntityManager();
 		entityManager.getTransaction().begin();
-		entityManager.persist(team);
+		entityManager.merge(team);
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}

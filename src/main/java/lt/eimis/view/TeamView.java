@@ -39,7 +39,8 @@ import java.util.List;
 		public void onRowEdit(RowEditEvent event) {
 			FacesMessage msg = new FacesMessage("Team XXX Edited", ((Team) event.getObject()).getTeamName());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-			service.saveLeague((Team) event.getObject());
+			Team team = (Team) event.getObject();
+			service.saveLeague(team);
 		}
 
 		public void onRowCancel(RowEditEvent event) {

@@ -17,21 +17,23 @@ public class Team implements Serializable {
 	@Column(name = "team_id", unique = true, nullable = false)
 	private int teamId;
 
+	@Column(name = "team_name", unique = false, nullable = false, length = 50)
 	private String teamName;
+
+	@Column(name = "team_sport_id", nullable = false)
 	private int sportId;
 
+	@Column(name = "team_games_played", nullable = false)
+	private int gamesPlayed;
 
 	public int getTeamId() {
 		return teamId;
 	}
 
-	@Column(name = "team_name", unique = false, nullable = false, length = 50)
 	public String getTeamName() {
 		return teamName;
 	}
 
-	@Id
-	@Column(name = "team_sport_id", nullable = false)
 	public int getSportId() {
 		return sportId;
 	}
@@ -66,16 +68,44 @@ public class Team implements Serializable {
 		if (sportId != team.sportId) {
 			return false;
 		}
-		return teamName != null ? teamName.equals(team.teamName) : team.teamName == null;
+		if (gamesPlayed != team.gamesPlayed) {
+			return false;
+		}
+		return teamName.equals(team.teamName);
 
 	}
 
 	@Override
 	public int hashCode() {
 		int result = teamId;
-		result = 31 * result + (teamName != null ? teamName.hashCode() : 0);
+		result = 31 * result + teamName.hashCode();
 		result = 31 * result + sportId;
+		result = 31 * result + gamesPlayed;
 		return result;
+	}
+
+	public Team() {
+	}
+
+	public Team(String teamName, int sportId, int gamesPlayed) {
+		this.teamName = teamName;
+		this.sportId = sportId;
+		this.gamesPlayed = gamesPlayed;
+	}
+
+	public Team(int teamId, String teamName, int sportId, int gamesPlayed) {
+		this.teamName = teamName;
+		this.sportId = sportId;
+		this.gamesPlayed = gamesPlayed;
+	}
+
+
+	public int getGamesPlayed() {
+		return gamesPlayed;
+	}
+
+	public void setGamesPlayed(int gamesPlayed) {
+		this.gamesPlayed = gamesPlayed;
 	}
 
 	@Override
@@ -84,6 +114,7 @@ public class Team implements Serializable {
 				"teamId=" + teamId +
 				", teamName='" + teamName + '\'' +
 				", sportId=" + sportId +
+				", gamesPlayed=" + gamesPlayed +
 				'}';
 	}
 }
