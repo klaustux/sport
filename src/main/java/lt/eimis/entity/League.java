@@ -3,21 +3,26 @@ package lt.eimis.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table( name = "LEAGUES" )
 public class League implements Serializable{
-	@Id
-	@Column(name="league_id")
+
 	private int leagueId;
 	@Column(name = "league_name")
 	private String leagueName;
 	@Column(name = "league_sport_id")
 	private int leagueSportId;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "league_id", unique = true, nullable = false)
 	public int getLeagueId() {
 		return leagueId;
 	}

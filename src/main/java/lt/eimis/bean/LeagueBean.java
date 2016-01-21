@@ -13,15 +13,13 @@ import java.util.List;
 public class LeagueBean {
 	private String name;
 	private int sport;
-
-	public String saveLeague(){
-//		LeagueDAO userDao = new LeagueDAO();
-//		Integer id = userDao.getId();
-//		League league = new League(id, name, sport);
-//		userDao.save(league);
-		System.out.println("League successfully saved.");
-		return "output";
-	}
+//
+//	public String saveLeague(){
+//		LeagueDAO leagueDAO = new LeagueDAO();
+//		League league = new League();
+//		leagueDAO.save(league);
+//		return "output";
+//	}
 	public String getName() {
 		return name;
 	}

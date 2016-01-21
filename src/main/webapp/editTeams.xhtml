@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<head>
+    <title>Teams</title>
+</head>
+<body>
+<h:form id="form">
+<p:growl id="msgs" showDetail="true"/>
+
+<p:dataTable id="teams" var="team" value="#{teamEditView.teams}" editable="true" style="margin-bottom:20px">
+    <f:facet name="header">
+        Row Editing
+    </f:facet>
+
+    <p:ajax event="rowEdit" listener="#{teamEditView.onRowEdit}" update=":form:msgs" />
+    <p:ajax event="rowEditCancel" listener="#{teamEditView.onRowCancel}" update=":form:msgs" />
+
+    <p:column headerText="Id">
+        <p:cellEditor>
+            <f:facet name="output"><h:outputText value="#{team.teamId}" /></f:facet>
+            <f:facet name="input"><p:inputText id="modelInput" value="#{team.teamId}" style="width:100%"/></f:facet>
+        </p:cellEditor>
+    </p:column>
+
+    <p:column headerText="Name">
+        <p:cellEditor>
+            <f:facet name="output"><h:outputText value="#{team.teamName}" /></f:facet>
+            <f:facet name="input"><p:inputText value="#{team.teamName}" style="width:100%" label="Year"/></f:facet>
+        </p:cellEditor>
+    </p:column>
+
+
+
+    <p:column style="width:32px">
+        <p:rowEditor />
+    </p:column>
+</p:dataTable>
+</h:form>
+ 
+</body>
+</html>
