@@ -12,10 +12,6 @@
 <h:body>
     <h1>List leagues</h1>
 
-    <h:form id="form">
-        <p:editor value="#{leagueBean.string}"></p:editor>
-    </h:form>
-
     <h:dataTable value="#{leagueBean.leagues}" var="league">
         <h:column>#{league.leagueName}</h:column>
         <h:column>#{league.leagueId}</h:column>

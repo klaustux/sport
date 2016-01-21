@@ -38,20 +38,6 @@ public class LeagueBean {
 	}
 
 	public List<League> getLeagues(){
-		LeagueDAO dao = new LeagueDAO();
-
-		return dao.listLeagues();
-		//		List<League> list = new ArrayList<>();
-
-//		League league1 = new League(1, "a", SportConstants.SPORT_ID_BASKETBALL);
-//		League league2 = new League(2, "b", SportConstants.SPORT_ID_BASKETBALL);
-//		list.add(league1);
-//		list.add(league2);
-
-//		return list;
-	}
-
-	public String getString(){
-		return "StriNg";
+		return new LeagueDAO().listLeagues();
 	}
 }
