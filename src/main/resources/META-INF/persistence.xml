@@ -12,11 +12,12 @@
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sportas?useSSL=false" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sportas" />
             <property name="javax.persistence.jdbc.verifyServerCertificate" value="false" />
             <property name="javax.persistence.jdbc.requireSSL" value="false" />
             <property name="javax.persistence.jdbc.user" value="sportas" />
             <property name="javax.persistence.jdbc.password" value="Sportas9.." />
+
 
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="validate" />
