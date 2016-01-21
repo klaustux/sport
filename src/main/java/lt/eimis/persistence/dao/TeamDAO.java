@@ -11,9 +11,17 @@ public class TeamDAO {
 	{
 		EntityManager entityManager =  HibernateUtil.getEntityManager();
 		entityManager.getTransaction().begin();
-		List<Team> leagues = entityManager.createQuery("from Team", Team.class ).getResultList();
+		List<Team> teams = entityManager.createQuery("from Team", Team.class ).getResultList();
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return leagues;
+		return teams;
+	}
+
+	public void save(Team team) {
+		EntityManager entityManager =  HibernateUtil.getEntityManager();
+		entityManager.getTransaction().begin();
+		entityManager.persist(team);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
 }

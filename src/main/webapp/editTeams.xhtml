@@ -31,11 +31,17 @@
     <p:column headerText="Name">
         <p:cellEditor>
             <f:facet name="output"><h:outputText value="#{team.teamName}" /></f:facet>
-            <f:facet name="input"><p:inputText value="#{team.teamName}" style="width:100%" label="Year"/></f:facet>
+            <f:facet name="input"><p:inputText value="#{team.teamName}" style="width:100%" label="Name"/></f:facet>
         </p:cellEditor>
     </p:column>
 
 
+    <p:column headerText="Sport">
+        <p:cellEditor>
+            <f:facet name="output"><h:outputText value="#{team.sportId}" /></f:facet>
+            <f:facet name="input"><p:inputText value="#{team.sportId}" style="width:100%" label="Sport"/></f:facet>
+        </p:cellEditor>
+    </p:column>
 
     <p:column style="width:32px">
         <p:rowEditor />

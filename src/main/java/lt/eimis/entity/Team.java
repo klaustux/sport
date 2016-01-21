@@ -3,23 +3,24 @@ package lt.eimis.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table( name = "TEAMS" )
 public class Team implements Serializable {
 
+	@Id
+	@GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name = "team_id", unique = true, nullable = false)
 	private int teamId;
+
 	private String teamName;
 	private int sportId;
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "team_id", unique = true, nullable = false)
+
 	public int getTeamId() {
 		return teamId;
 	}
