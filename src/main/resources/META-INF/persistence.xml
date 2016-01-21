@@ -9,6 +9,7 @@
         </description>
 
         <class>lt.eimis.entity.League</class>
+        <class>lt.eimis.entity.Team</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
@@ -20,7 +21,7 @@
 
 
             <property name="hibernate.show_sql" value="true" />
-            <property name="hibernate.hbm2ddl.auto" value="validate" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
 
     </persistence-unit>

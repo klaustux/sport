@@ -1,4 +1,4 @@
-package org.hibernate.tutorial.em;
+package lt.eimis.sql;
 
 import org.junit.Test;
 
