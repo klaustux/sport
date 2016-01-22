@@ -14,8 +14,12 @@ public class TeamBean {
 	private String name;
 	private int sport;
 
-	public void saveLeague(Team team){
+	public void saveTeam(Team team){
 		new TeamDAO().save(team);
+	}
+
+	public void deleteTeam(Team team){
+		new TeamDAO().deleteById(team.getTeamId());
 	}
 
 	public String getName() {

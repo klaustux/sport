@@ -22,7 +22,7 @@
     <p:ajax event="rowEditCancel" listener="#{teamEditView.onRowCancel}" update=":form:msgs" />
 
     <p:column headerText="Games played">
-        <p:cellEditor>
+            <p:cellEditor>
             <f:facet name="output"><h:outputText value="#{team.gamesPlayed}" /></f:facet>
             <f:facet name="input"><p:inputText id="modelInput" value="#{team.gamesPlayed}" style="width:100%"/></f:facet>
         </p:cellEditor>
@@ -45,7 +45,11 @@
 
     <p:column style="width:32px">
         <p:rowEditor />
+        <p:commandLink id="deleteLink" styleClass="ui-icon ui-icon-trash"
+                       actionListener="#{teamEditView.deleteTeam(team)}"  update="@form" ajax="true" />
+
     </p:column>
+
 </p:dataTable>
 </h:form>
 

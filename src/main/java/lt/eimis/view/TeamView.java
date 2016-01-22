@@ -2,7 +2,6 @@ package lt.eimis.view;
 
 import lt.eimis.bean.TeamBean;
 import lt.eimis.entity.Team;
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
@@ -37,24 +36,21 @@ import java.util.List;
 		}
 
 		public void onRowEdit(RowEditEvent event) {
-			FacesMessage msg = new FacesMessage("Team XXX Edited", ((Team) event.getObject()).getTeamName());
+			FacesMessage msg = new FacesMessage("Team Edited", ((Team) event.getObject()).getTeamName());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			Team team = (Team) event.getObject();
-			service.saveLeague(team);
+			service.saveTeam(team);
+		}
+
+		public void deleteTeam(Team team) {
+			FacesMessage msg = new FacesMessage("Team Deleted", team.getTeamName());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			service.deleteTeam(team);
+			teams = service.getTeams();
 		}
 
 		public void onRowCancel(RowEditEvent event) {
 			FacesMessage msg = new FacesMessage("Edit Cancelled", ((Team) event.getObject()).getTeamName());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-
-		public void onCellEdit(CellEditEvent event) {
-			Object oldValue = event.getOldValue();
-			Object newValue = event.getNewValue();
-
-			if(newValue != null && !newValue.equals(oldValue)) {
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
 		}
 	}
