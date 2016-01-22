@@ -1,5 +1,7 @@
 package lt.eimis.entity;
 
+import lt.eimis.util.SportUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -117,4 +119,11 @@ public class Team implements Serializable {
 				", gamesPlayed=" + gamesPlayed +
 				'}';
 	}
+
+
+	public String getSportName(){
+		return SportUtils.getSportName(sportId);
+	}
+
+	public void setSportName(){}
 }

@@ -47,4 +47,8 @@ public class TeamDAO {
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}
+
+	public void addTeam(Team team) {
+		save(team);
+	}
 }

@@ -10,21 +10,26 @@
     <title>Teams</title>
 </h:head>
 <h:body>
-<h:form id="form">
+
+<h:form id="viewForm" style="width: 1000px">
 <p:growl id="msgs" showDetail="true"/>
 
-<p:dataTable id="teams" var="team" value="#{teamEditView.teams}" editable="true" style="margin-bottom:20px">
+
+    
+
+<p:dataTable id="teams" var="team" value="#{teamView.teams}" editable="true" style="margin-bottom:20px" emptyMessage="">
     <f:facet name="header">
-        Row Editing
+        Teams
     </f:facet>
 
-    <p:ajax event="rowEdit" listener="#{teamEditView.onRowEdit}" update=":form:msgs" />
-    <p:ajax event="rowEditCancel" listener="#{teamEditView.onRowCancel}" update=":form:msgs" />
+    <p:ajax event="rowEdit" listener="#{teamView.onRowEdit}" update=":viewForm:msgs" />
+    <p:ajax event="rowEditCancel" listener="#{teamView.onRowCancel}" update=":viewForm:msgs" />
 
     <p:column headerText="Games played">
             <p:cellEditor>
             <f:facet name="output"><h:outputText value="#{team.gamesPlayed}" /></f:facet>
-            <f:facet name="input"><p:inputText id="modelInput" value="#{team.gamesPlayed}" style="width:100%"/></f:facet>
+            <f:facet name="input"><p:inputText id="gamesInput" value="#{team.gamesPlayed}" style="width:100%"/></f:facet>
+
         </p:cellEditor>
     </p:column>
 
@@ -37,21 +42,48 @@
 
 
     <p:column headerText="Sport">
-        <p:cellEditor>
-            <f:facet name="output"><h:outputText value="#{team.sportId}" /></f:facet>
-            <f:facet name="input"><p:inputText value="#{team.sportId}" style="width:100%" label="Sport"/></f:facet>
-        </p:cellEditor>
+        <h:outputText value="#{team.sportName}" />
     </p:column>
 
     <p:column style="width:32px">
         <p:rowEditor />
         <p:commandLink id="deleteLink" styleClass="ui-icon ui-icon-trash"
-                       actionListener="#{teamEditView.deleteTeam(team)}"  update="@form" ajax="true" />
+                       actionListener="#{teamView.deleteTeam(team)}"  update="@form" ajax="true" />
 
     </p:column>
 
 </p:dataTable>
 </h:form>
+
+    <h:form id="newTeamForm" style="width: 800px">
+    <p:panelGrid columns="3">
+        <h:outputLabel value="Team Name: " />
+        <p:inputText id="teamName" value="#{teamView.newTeamName}" required="true" >
+            <f:validateLength minimum="2" />
+        </p:inputText>
+        <p:message for="teamName" id="msgLastname" display="icon" />
+
+        <h:outputLabel for="games" value="Games played: " />
+        <p:inputText id="games" value="#{teamView.newTeamGames}" converter="javax.faces.Integer" required="true">
+            <f:validateDoubleRange minimum="0"/>
+        </p:inputText>
+        <p:message for="games" id="msgGames" display="icon" />
+
+
+            <p:outputLabel for="sport" value="Sport:" />
+            <p:selectOneRadio id="sport" value="#{teamView.newTeamSport}">
+                <f:selectItem itemLabel="Basketball" itemValue="0" />
+                <f:selectItem itemLabel="Football" itemValue="1" selected="true" />
+            </p:selectOneRadio>
+            <p:outputLabel/>
+
+         <f:facet name="footer">
+            <p:commandButton id="addBtn" value="Add" action="#{teamView.onRowAdd()}"   ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+        </f:facet>
+    </p:panelGrid>
+    </h:form>
+
 
 </h:body>
 </html>

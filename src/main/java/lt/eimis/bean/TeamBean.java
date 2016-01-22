@@ -40,4 +40,8 @@ public class TeamBean {
 	public List<Team> getTeams(){
 		return new TeamDAO().listTeams();
 	}
+
+	public void addTeam(Team team) {
+		new TeamDAO().addTeam(team);
+	}
 }
