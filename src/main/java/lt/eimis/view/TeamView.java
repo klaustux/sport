@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,9 +38,20 @@ public class TeamView implements Serializable {
     @ManagedProperty("#{leagueBean}")
     private LeagueDAO leagueBean;
 
-    @PostConstruct
+	private List<League> listBySport = new ArrayList<>();
+
+	public List<League> getListBySport() {
+		return listBySport;
+	}
+
+	public void setListBySport(List<League> listBySport) {
+		this.listBySport = listBySport;
+	}
+
+	@PostConstruct
     public void init() {
         teams = teamBean.getList();
+		listBySport = leagueBean.getListBySport(newTeamSport);
     }
 
     public List<Team> getTeams() {
@@ -113,6 +125,10 @@ public class TeamView implements Serializable {
                 ((Team) event.getObject()).getTeamName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+	public void onSportChange() {
+		listBySport = leagueBean.getListBySport(newTeamSport);
+ 	}
 
     public void onRowAdd() {
         Set<League> leagueSet = new HashSet<>(0);

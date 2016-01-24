@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Teams</title>
+</h:head>
+<h:body>
+
+    <ui:include src="header.xhtml"/>
+
+    <h:form id="viewForm" style="width: 1000px">
+        <p:growl id="msgs" showDetail="false"/>
+
+        <p:dataTable id="teams" var="team" value="#{teamView.teams}" editable="true" style="margin-bottom:20px"
+                     emptyMessage="">
+            <f:facet name="header">
+                Teams
+            </f:facet>
+
+            <p:ajax event="rowEdit" listener="#{teamView.onRowEdit}" update=":viewForm:msgs"/>
+            <p:ajax event="rowEditCancel" listener="#{teamView.onRowCancel}" update=":viewForm:msgs"/>
+
+            <p:column headerText="Games played">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{team.gamesPlayed}"/></f:facet>
+                    <f:facet name="input">
+                        <p:inputText id="gamesInput" value="#{team.gamesPlayed}" style="width:100%">
+                            <f:validateDoubleRange minimum="0"/>
+                        </p:inputText>
+                    </f:facet>
+
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Name">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{team.teamName}"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{team.teamName}" style="width:100%"
+                                                       label="Name"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Sport">
+                <h:outputText value="#{team.sportName}"/>
+            </p:column>
+
+            <p:column headerText="Leagues">
+                <p:dataList value="#{team.leagues}" var="league" itemType="none" emptyMessage="">
+                    #{league.name}
+                </p:dataList>
+            </p:column>
+
+            <p:column style="width:32px">
+                <p:rowEditor/>
+                <p:commandLink id="deleteLink" styleClass="ui-icon ui-icon-trash"
+                               actionListener="#{teamView.deleteTeam(team)}" update="@form" ajax="true"/>
+
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+    <h:form id="newTeamForm" style="width: 800px">
+        <p:panelGrid columns="3">
+            <h:outputLabel value="Team Name: "/>
+            <p:inputText id="teamName" value="#{teamView.newTeamName}" required="true">
+                <f:validateLength minimum="1"/>
+            </p:inputText>
+            <p:message for="teamName" id="msgLastname" display="icon"/>
+
+            <h:outputLabel for="games" value="Games played: "/>
+            <h:inputText id="games" value="#{teamView.newTeamGames}" converter="javax.faces.Integer" required="true">
+                <f:validateDoubleRange minimum="0" label="Rungtynių skaičius:"/>
+            </h:inputText>
+            <h:message for="games" id="msgGames" style="color:red"/>
+
+            <p:outputLabel for="sport" value="Sport:"/>
+            <p:selectOneRadio id="sport" value="#{teamView.newTeamSport}">
+                <f:selectItem itemLabel="Basketball" itemValue="0"/>
+                <f:selectItem itemLabel="Football" itemValue="1" checked="true"/>
+                <p:ajax listener="#{teamView.onSportChange}" update="leagueDropdown"/>
+            </p:selectOneRadio>
+            <h:message for="sport" id="msgSport" style="color:red"/>
+
+            <p:outputLabel for="leagueDropdown" value="Lygos:"/>
+            <h:selectManyListbox id="leagueDropdown" value="#{teamView.leagues}" style="width: 200px;">
+                <f:selectItems value="#{teamView.listBySport}" var="league" itemValue="#{league.id}"
+                               itemLabel="#{league.name}"/>
+            </h:selectManyListbox>
+            <h:message for="leagueDropdown" id="msgLeagues" style="color:red"/>
+
+            <f:facet name="footer">
+                <p:commandButton id="addBtn" value="Add" action="#{teamView.onRowAdd()}" ajax="false"
+                                 icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            </f:facet>
+        </p:panelGrid>
+    </h:form>
+
+
+</h:body>
+</html>

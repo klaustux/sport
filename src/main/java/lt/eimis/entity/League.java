@@ -46,7 +46,7 @@ public class League implements Serializable{
 		this.name = leagueName;
 	}
 
-	@Column(name = "league_sport_id")
+	@Column(name = "sport_id")
 	public int getSportId() {
 		return sportId;
 	}

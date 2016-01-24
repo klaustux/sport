@@ -143,6 +143,12 @@ public class PlayerView implements Serializable {
     }
 
     public void onRowAdd() {
+        if(team == null)
+		{
+			FacesMessage msg = new FacesMessage("Negalima sukurti žaidėjo be komandos", "Nėra komandų");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
         Integer id = Integer.valueOf(team);
         Team team = teamDAO.find(id);
         Player newPlayer = new Player(newPlayerFirstName, newPlayerLastName,

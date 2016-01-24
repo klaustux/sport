@@ -11,54 +11,53 @@
 </h:head>
 <h:body>
 
+    <ui:include src="header.xhtml"/>
 
     <h:form id="playersViewForm" style="width: 1000px">
         <p:growl id="msgs" showDetail="false"/>
 
-        <p:dataTable id="players" var="player" value="#{playerView.players}" editable="true" style="margin-bottom:20px" emptyMessage="">
+        <p:dataTable id="players" var="player" value="#{playerView.players}" editable="true" style="margin-bottom:20px"
+                     emptyMessage="">
             <f:facet name="header">
-                Players
+                Žaidėjai
             </f:facet>
 
-            <p:ajax event="rowEdit" listener="#{playerView.onRowEdit}" update=":playersViewForm:msgs" />
-            <p:ajax event="rowEditCancel" listener="#{playerView.onRowCancel}" update=":playersViewForm:msgs" />
+            <p:ajax event="rowEdit" listener="#{playerView.onRowEdit}" update=":playersViewForm:msgs"/>
+            <p:ajax event="rowEditCancel" listener="#{playerView.onRowCancel}" update=":playersViewForm:msgs"/>
 
-            <p:column headerText="First Name">
+            <p:column headerText="Vardas">
                 <p:cellEditor>
-                    <f:facet name="output"><h:outputText value="#{player.firstName}" /></f:facet>
-                    <f:facet name="input"><p:inputText value="#{player.firstName}" style="width:100%" label="First Name"/></f:facet>
+                    <f:facet name="output"><h:outputText value="#{player.firstName}"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{player.firstName}" style="width:100%"
+                                                       label="First Name"/></f:facet>
                 </p:cellEditor>
             </p:column>
 
-            <p:column headerText="Last Name">
+            <p:column headerText="Pavardė">
                 <p:cellEditor>
-                    <f:facet name="output"><h:outputText value="#{player.lastName}" /></f:facet>
+                    <f:facet name="output"><h:outputText value="#{player.lastName}"/></f:facet>
                     <f:facet name="input"><p:inputText value="#{player.lastName}" style="width:100%" label="Last Name"/></f:facet>
                 </p:cellEditor>
             </p:column>
 
 
-            <p:column headerText="Sport">
-                <h:outputText value="#{player.sportName}" />
+            <p:column headerText="Sportas">
+                <h:outputText value="#{player.sportName}"/>
             </p:column>
 
-            <p:column headerText="Position">
-                <h:outputText value="#{player.positionName}" />
+            <p:column headerText="Pozicija">
+                <h:outputText value="#{player.positionName}"/>
             </p:column>
 
-
-
-            <p:column headerText="Team">
-                <h:outputText value="#{player.team.teamName}" />
+            <p:column headerText="Komanda">
+                <h:outputText value="#{player.team.teamName}"/>
             </p:column>
-
-
 
 
             <p:column style="width:32px">
-                <p:rowEditor />
+                <p:rowEditor/>
                 <p:commandLink id="deleteLink" styleClass="ui-icon ui-icon-trash"
-                               actionListener="#{playerView.deleteLeague(player)}"  update="@form" ajax="true" />
+                               actionListener="#{playerView.deleteLeague(player)}" update="@form" ajax="true"/>
 
             </p:column>
 
@@ -66,55 +65,57 @@
     </h:form>
     <h:form id="newPlayerForm" style="width: 800px">
         <p:panelGrid columns="3">
-            <h:outputLabel value="First Name:" />
-            <p:inputText id="firstName" value="#{playerView.newPlayerFirstName}" required="true" >
-                <f:validateLength minimum="1" />
+            <h:outputLabel value="Vardas:"/>
+            <p:inputText id="firstName" value="#{playerView.newPlayerFirstName}" required="true">
+                <f:validateLength minimum="1"/>
             </p:inputText>
-            <p:message for="firstName" id="msgFirstName" display="icon" />
+            <p:message for="firstName" id="msgFirstName" display="icon"/>
 
-            <h:outputLabel value="Last Name:" />
-            <p:inputText id="lastName" value="#{playerView.newPlayerLastName}" required="true" >
-                <f:validateLength minimum="1" />
+            <h:outputLabel value="Pavardė:"/>
+            <p:inputText id="lastName" value="#{playerView.newPlayerLastName}" required="true">
+                <f:validateLength minimum="1"/>
             </p:inputText>
-            <p:message for="lastName" id="msgLastName" display="icon" />
+            <p:message for="lastName" id="msgLastName" display="icon"/>
 
-            <p:outputLabel for="sport" value="Sport:" />
+            <p:outputLabel for="sport" value="Sportas:"/>
             <p:selectOneRadio id="sport" value="#{playerView.newPlayerSport}">
-                <f:selectItem itemLabel="Basketball" itemValue="0" />
-                <f:selectItem itemLabel="Football" itemValue="1" checked="true" />
+                <f:selectItem itemLabel="Krepšinis" itemValue="0"/>
+                <f:selectItem itemLabel="Futbolas" itemValue="1" checked="true"/>
             </p:selectOneRadio>
-            <p:message for="sport" id="msgSport" display="icon" />
+            <p:message for="sport" id="msgSport" display="icon"/>
 
-            <p:outputLabel for="team" value="Team:" />
-            <h:selectOneListbox id="team" value="#{playerView.team}">
-                <f:selectItems value="#{teamView.teams}" var="team"  itemValue="#{team.teamId}" itemLabel="#{team.teamName}"/>
+            <p:outputLabel for="team" value="Komanda:"/>
+            <h:selectOneListbox id="team" style="width:200px;" value="#{playerView.team}">
+                <f:selectItems value="#{teamView.teams}" var="team" itemValue="#{team.teamId}"
+                               itemLabel="#{team.teamName}"/>
             </h:selectOneListbox>
-            <p:message for="team" id="msgTeam" display="icon" />
+            <p:message for="team" id="msgTeam" display="icon"/>
 
-            <p:outputLabel for="position" value="Position:" />
+            <p:outputLabel for="position" value="Pozicija:"/>
             <p:selectOneRadio id="position" value="#{playerView.newPlayerPosition}">
-                <f:selectItem itemLabel="Centras" itemValue="0" />
-                <f:selectItem itemLabel="Gynėjas" itemValue="1" checked="true" />
-                <f:selectItem itemLabel="Puolėjas" itemValue="2" />
+                <f:selectItem itemLabel="Centras" itemValue="0"/>
+                <f:selectItem itemLabel="Gynėjas" itemValue="1" checked="true"/>
+                <f:selectItem itemLabel="Puolėjas" itemValue="2"/>
             </p:selectOneRadio>
-            <p:message for="position" id="msgPosition" display="icon" />
+            <p:message for="position" id="msgPosition" display="icon"/>
 
-            <h:outputLabel for="games" value="Games played: "/>
-            <h:inputText id="games" value="#{playerView.newPlayerGames}" converter="javax.faces.Integer" required="true">
+            <h:outputLabel for="games" value="Sužaista rungtynių: "/>
+            <h:inputText id="games" value="#{playerView.newPlayerGames}" converter="javax.faces.Integer"
+                         required="true">
                 <f:validateDoubleRange minimum="0" label="Rungtynių skaičius:"/>
             </h:inputText>
-            <h:message for="games" id="msgGames" style="color:red" />
+            <h:message for="games" id="msgGames" style="color:red"/>
 
-            <h:outputLabel for="points" value="Scored:"/>
-            <h:inputText id="points" value="#{playerView.newPlayerPoints}" converter="javax.faces.Integer" required="true">
+            <h:outputLabel for="points" value="Pelnė:"/>
+            <h:inputText id="points" value="#{playerView.newPlayerPoints}" converter="javax.faces.Integer"
+                         required="true">
                 <f:validateDoubleRange minimum="0" label="Taškų skaičius:"/>
             </h:inputText>
-            <h:message for="points" id="msgPoints" style="color:red" />
-
+            <h:message for="points" id="msgPoints" style="color:red"/>
 
 
             <f:facet name="footer">
-                <p:commandButton id="addBtn" value="Add" action="#{playerView.onRowAdd()}"   ajax="false"
+                <p:commandButton id="addBtn" value="Pridėti" action="#{playerView.onRowAdd()}" ajax="false"
                                  icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
             </f:facet>
         </p:panelGrid>
