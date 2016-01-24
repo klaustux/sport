@@ -2,40 +2,47 @@ package lt.eimis.entity;
 
 import lt.eimis.util.SportUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table( name = "TEAMS" )
+@Table( name = "teams" )
 public class Team implements Serializable {
+
+
+	private int teamId;
+	private String teamName;
+	private int sportId;
+	private int gamesPlayed;
+	private Set<League> leagues = new HashSet<League>(0);
+	private transient String sportName;
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column(name = "team_id", unique = true, nullable = false)
-	private int teamId;
-
-	@Column(name = "team_name", unique = false, nullable = false, length = 50)
-	private String teamName;
-
-	@Column(name = "team_sport_id", nullable = false)
-	private int sportId;
-
-	@Column(name = "team_games_played", nullable = false)
-	private int gamesPlayed;
-
 	public int getTeamId() {
 		return teamId;
 	}
 
+	@Column(name = "team_name", unique = false, nullable = false, length = 50)
 	public String getTeamName() {
 		return teamName;
 	}
 
+	@Column(name = "team_sport_id", nullable = false)
 	public int getSportId() {
 		return sportId;
 	}
@@ -53,39 +60,6 @@ public class Team implements Serializable {
 		this.sportId = sportId;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		Team team = (Team) o;
-
-		if (teamId != team.teamId) {
-			return false;
-		}
-		if (sportId != team.sportId) {
-			return false;
-		}
-		if (gamesPlayed != team.gamesPlayed) {
-			return false;
-		}
-		return teamName.equals(team.teamName);
-
-	}
-
-	@Override
-	public int hashCode() {
-		int result = teamId;
-		result = 31 * result + teamName.hashCode();
-		result = 31 * result + sportId;
-		result = 31 * result + gamesPlayed;
-		return result;
-	}
-
 	public Team() {
 	}
 
@@ -101,7 +75,14 @@ public class Team implements Serializable {
 		this.gamesPlayed = gamesPlayed;
 	}
 
+	public Team(int teamId, String teamName, int sportId, int gamesPlayed, Set<League> leagues) {
+		this.teamName = teamName;
+		this.sportId = sportId;
+		this.gamesPlayed = gamesPlayed;
+		this.leagues = leagues;
+	}
 
+	@Column(name = "team_games_played", nullable = false)
 	public int getGamesPlayed() {
 		return gamesPlayed;
 	}
@@ -110,20 +91,24 @@ public class Team implements Serializable {
 		this.gamesPlayed = gamesPlayed;
 	}
 
-	@Override
-	public String toString() {
-		return "Team{" +
-				"teamId=" + teamId +
-				", teamName='" + teamName + '\'' +
-				", sportId=" + sportId +
-				", gamesPlayed=" + gamesPlayed +
-				'}';
-	}
-
-
+	@Transient
 	public String getSportName(){
 		return SportUtils.getSportName(sportId);
 	}
 
 	public void setSportName(){}
+
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "teams_leagues", joinColumns = {
+			@JoinColumn(name = "team_id", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "league_id",
+					nullable = false, updatable = false) })
+	public Set<League> getLeagues() {
+		return this.leagues;
+	}
+
+	public void setLeagues(Set<League> leagues) {
+		this.leagues = leagues;
+	}
 }

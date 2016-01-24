@@ -1,19 +1,19 @@
 package lt.eimis.persistence.dao;
 
 import lt.eimis.entity.League;
-import lt.eimis.persistence.HibernateUtil;
 
-import javax.persistence.EntityManager;
-import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
-public class LeagueDAO {
-	public List<League> listLeagues()
-	{
-		EntityManager entityManager =  HibernateUtil.getEntityManager();
-		entityManager.getTransaction().begin();
-		List<League> leagues = entityManager.createQuery("from League", League.class ).getResultList();
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		return leagues;
+
+@ManagedBean(name = "leagueBean", eager = true)
+@RequestScoped
+public class LeagueDAO extends CommonDAO<League>{
+	public LeagueDAO(Class<League> entityClass) {
+		super(entityClass);
+	}
+
+	public LeagueDAO() {
+		super(League.class);
 	}
 }

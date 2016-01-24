@@ -10,11 +10,19 @@
 <h:head>
 </h:head>
 <h:body>
-   <h1>Hello World PrimeFaces</h1>
-
-   <h:form>
-      <p:editor value="#{editor.value}" />
-   </h:form>
-
+    <h:form id="tabForm">
+        <p:growl id="msgs" showDetail="true"/>
+        <p:tabView>
+        <p:tab title="Teams">
+            <ui:include src="editTeams.xhtml" />
+        </p:tab>
+        <p:tab title="Leagues">
+            <ui:include src="leagues.xhtml" />
+        </p:tab>
+        <p:tab title="Players">
+            <ui:include src="players.xhtml" />
+        </p:tab>
+    </p:tabView>
+    </h:form>
 </h:body>
 </html>

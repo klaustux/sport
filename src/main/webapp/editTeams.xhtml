@@ -11,11 +11,9 @@
 </h:head>
 <h:body>
 
+
 <h:form id="viewForm" style="width: 1000px">
-<p:growl id="msgs" showDetail="true"/>
-
-
-    
+<p:growl id="msgs" showDetail="false"/>
 
 <p:dataTable id="teams" var="team" value="#{teamView.teams}" editable="true" style="margin-bottom:20px" emptyMessage="">
     <f:facet name="header">
@@ -28,7 +26,11 @@
     <p:column headerText="Games played">
             <p:cellEditor>
             <f:facet name="output"><h:outputText value="#{team.gamesPlayed}" /></f:facet>
-            <f:facet name="input"><p:inputText id="gamesInput" value="#{team.gamesPlayed}" style="width:100%"/></f:facet>
+            <f:facet name="input">
+                <p:inputText id="gamesInput" value="#{team.gamesPlayed}" style="width:100%">
+                    <f:validateDoubleRange minimum="0"/>
+                </p:inputText>
+            </f:facet>
 
         </p:cellEditor>
     </p:column>
@@ -40,9 +42,14 @@
         </p:cellEditor>
     </p:column>
 
-
     <p:column headerText="Sport">
         <h:outputText value="#{team.sportName}" />
+    </p:column>
+
+    <p:column headerText="Leagues">
+        <p:dataList  value="#{team.leagues}" var="league" itemType="none" emptyMessage="">
+            #{league.name}
+        </p:dataList>
     </p:column>
 
     <p:column style="width:32px">
@@ -54,29 +61,29 @@
 
 </p:dataTable>
 </h:form>
-
     <h:form id="newTeamForm" style="width: 800px">
     <p:panelGrid columns="3">
         <h:outputLabel value="Team Name: " />
         <p:inputText id="teamName" value="#{teamView.newTeamName}" required="true" >
-            <f:validateLength minimum="2" />
+            <f:validateLength minimum="1" />
         </p:inputText>
         <p:message for="teamName" id="msgLastname" display="icon" />
 
-        <h:outputLabel for="games" value="Games played: " />
-        <p:inputText id="games" value="#{teamView.newTeamGames}" converter="javax.faces.Integer" required="true">
-            <f:validateDoubleRange minimum="0"/>
-        </p:inputText>
-        <p:message for="games" id="msgGames" display="icon" />
+        <h:outputLabel for="games" value="Games played: "/>
+        <h:inputText id="games" value="#{teamView.newTeamGames}" converter="javax.faces.Integer" required="true">
+            <f:validateDoubleRange minimum="0" label="Rungtynių skaičius:"/>
+        </h:inputText>
+        <h:message for="games" id="msgGames" style="color:red" />
 
+        <p:outputLabel for="sport" value="Sport:" />
+        <p:selectOneRadio id="sport" value="#{teamView.newTeamSport}">
+            <f:selectItem itemLabel="Basketball" itemValue="0" />
+            <f:selectItem itemLabel="Football" itemValue="1" checked="true" />
+        </p:selectOneRadio>
 
-            <p:outputLabel for="sport" value="Sport:" />
-            <p:selectOneRadio id="sport" value="#{teamView.newTeamSport}">
-                <f:selectItem itemLabel="Basketball" itemValue="0" />
-                <f:selectItem itemLabel="Football" itemValue="1" selected="true" />
-            </p:selectOneRadio>
-            <p:outputLabel/>
-
+                <h:selectManyListbox value="#{teamView.leagues}">
+                  <f:selectItems value="#{leagueBean.list}" var="league"  itemValue="#{league.id}" itemLabel="#{league.name}"/>
+        </h:selectManyListbox>
          <f:facet name="footer">
             <p:commandButton id="addBtn" value="Add" action="#{teamView.onRowAdd()}"   ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>

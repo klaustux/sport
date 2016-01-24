@@ -1,90 +1,94 @@
 package lt.eimis.entity;
 
+import lt.eimis.util.SportUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table( name = "LEAGUES" )
+@Table( name = "leagues" )
 public class League implements Serializable{
 
-	private int leagueId;
-	@Column(name = "league_name")
-	private String leagueName;
-	@Column(name = "league_sport_id")
-	private int leagueSportId;
+	private int id;
+	private String name;
+	private int sportId;
+	private Set<Team> teams = new HashSet<Team>(0);
+	private transient String sportName;
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
+	@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column(name = "league_id", unique = true, nullable = false)
-	public int getLeagueId() {
-		return leagueId;
+	public int getId() {
+		return id;
 	}
 
-	public void setLeagueId(int leagueId) {
-		this.leagueId = leagueId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getLeagueName() {
-		return leagueName;
+	@Column(name = "league_name")
+	public String getName() {
+		return name;
 	}
 
-	public void setLeagueName(String leagueName) {
-		this.leagueName = leagueName;
+	public void setName(String leagueName) {
+		this.name = leagueName;
 	}
 
-	public int getLeagueSportId() {
-		return leagueSportId;
+	@Column(name = "league_sport_id")
+	public int getSportId() {
+		return sportId;
 	}
 
-	public void setLeagueSportId(int leagueSportId) {
-		this.leagueSportId = leagueSportId;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		League leagues = (League) o;
-
-		if (leagueId != leagues.leagueId) {
-			return false;
-		}
-		if (leagueSportId != leagues.leagueSportId) {
-			return false;
-		}
-		if (leagueName != null ? !leagueName.equals(leagues.leagueName) : leagues.leagueName != null) {
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = leagueId;
-		result = 31 * result + (leagueName != null ? leagueName.hashCode() : 0);
-		result = 31 * result + leagueSportId;
-		return result;
+	public void setSportId(int leagueSportId) {
+		this.sportId = leagueSportId;
 	}
 
 	public League() {
 	}
 
 	public League(int leagueId, String leagueName, int leagueSportId) {
-		this.leagueId = leagueId;
-		this.leagueName = leagueName;
-		this.leagueSportId = leagueSportId;
+		this.name = leagueName;
+		this.sportId = leagueSportId;
 	}
+
+	public League(String leagueName, int leagueSportId) {
+		this.name = leagueName;
+		this.sportId = leagueSportId;
+	}
+
+	public League(int id, String name, int sportId, Set<Team> teams) {
+		this.name = name;
+		this.sportId = sportId;
+		this.teams = teams;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "leagues")
+	public Set<Team> getTeams() {
+		return this.teams;
+	}
+
+	public void setTeams(Set<Team> teams) {
+		this.teams = teams;
+	}
+
+	@Transient
+	public String getSportName(){
+		return SportUtils.getSportName(sportId);
+	}
+
+	public void setSportName(){}
+
+
 }
