@@ -10,6 +10,7 @@
 
         <class>lt.eimis.entity.Team</class>
         <class>lt.eimis.entity.League</class>
+        <class>lt.eimis.entity.Player</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />

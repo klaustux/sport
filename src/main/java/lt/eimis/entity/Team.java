@@ -1,6 +1,8 @@
 package lt.eimis.entity;
 
-import lt.eimis.util.SportUtils;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,103 +14,115 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+
+import lt.eimis.util.SportUtils;
 
 @Entity
-@Table( name = "teams" )
+@Table(name = "teams")
 public class Team implements Serializable {
+    private int teamId;
 
+    private String teamName;
 
-	private int teamId;
-	private String teamName;
-	private int sportId;
-	private int gamesPlayed;
-	private Set<League> leagues = new HashSet<League>(0);
-	private transient String sportName;
+    private int sportId;
 
-	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name = "team_id", unique = true, nullable = false)
-	public int getTeamId() {
-		return teamId;
-	}
+    private int gamesPlayed;
 
-	@Column(name = "team_name", unique = false, nullable = false, length = 50)
-	public String getTeamName() {
-		return teamName;
-	}
+    private Set<League> leagues = new HashSet<League>(0);
 
-	@Column(name = "team_sport_id", nullable = false)
-	public int getSportId() {
-		return sportId;
-	}
+    private Set<Player> players = new HashSet<Player>(0);
 
-  	public void setTeamId(int teamId) {
-		this.teamId = teamId;
-	}
+    private transient String sportName;
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
-	}
+    public Team() {
+    }
 
+    public Team(String teamName, int sportId, int gamesPlayed) {
+        this.teamName = teamName;
+        this.sportId = sportId;
+        this.gamesPlayed = gamesPlayed;
+    }
 
-	public void setSportId(int sportId) {
-		this.sportId = sportId;
-	}
+    public Team(int teamId, String teamName, int sportId, int gamesPlayed) {
+        this.teamName = teamName;
+        this.sportId = sportId;
+        this.gamesPlayed = gamesPlayed;
+    }
 
-	public Team() {
-	}
+    public Team(int teamId, String teamName, int sportId, int gamesPlayed,
+            Set<League> leagues) {
+        this.teamName = teamName;
+        this.sportId = sportId;
+        this.gamesPlayed = gamesPlayed;
+        this.leagues = leagues;
+    }
 
-	public Team(String teamName, int sportId, int gamesPlayed) {
-		this.teamName = teamName;
-		this.sportId = sportId;
-		this.gamesPlayed = gamesPlayed;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "team_id", unique = true, nullable = false)
+    public int getTeamId() {
+        return teamId;
+    }
 
-	public Team(int teamId, String teamName, int sportId, int gamesPlayed) {
-		this.teamName = teamName;
-		this.sportId = sportId;
-		this.gamesPlayed = gamesPlayed;
-	}
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
+    }
 
-	public Team(int teamId, String teamName, int sportId, int gamesPlayed, Set<League> leagues) {
-		this.teamName = teamName;
-		this.sportId = sportId;
-		this.gamesPlayed = gamesPlayed;
-		this.leagues = leagues;
-	}
+    @Column(name = "team_name", unique = false, nullable = false, length = 50)
+    public String getTeamName() {
+        return teamName;
+    }
 
-	@Column(name = "team_games_played", nullable = false)
-	public int getGamesPlayed() {
-		return gamesPlayed;
-	}
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
 
-	public void setGamesPlayed(int gamesPlayed) {
-		this.gamesPlayed = gamesPlayed;
-	}
+    @Column(name = "team_sport_id", nullable = false)
+    public int getSportId() {
+        return sportId;
+    }
 
-	@Transient
-	public String getSportName(){
-		return SportUtils.getSportName(sportId);
-	}
+    public void setSportId(int sportId) {
+        this.sportId = sportId;
+    }
 
-	public void setSportName(){}
+    @Column(name = "team_games_played", nullable = false)
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
 
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
+    }
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "teams_leagues", joinColumns = {
-			@JoinColumn(name = "team_id", nullable = false, updatable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "league_id",
-					nullable = false, updatable = false) })
-	public Set<League> getLeagues() {
-		return this.leagues;
-	}
+    @Transient
+    public String getSportName() {
+        return SportUtils.getSportName(sportId);
+    }
 
-	public void setLeagues(Set<League> leagues) {
-		this.leagues = leagues;
-	}
+    public void setSportName() {
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "teams_leagues", joinColumns = { @JoinColumn(name = "team_id", nullable = false, updatable = false) },
+			   inverseJoinColumns = { @JoinColumn(name = "league_id", nullable = false, updatable = false) })
+    public Set<League> getLeagues() {
+        return this.leagues;
+    }
+
+    public void setLeagues(Set<League> leagues) {
+        this.leagues = leagues;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "team")
+    public Set<Player> getPlayers() {
+        return this.players;
+    }
+
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
+    }
 }
