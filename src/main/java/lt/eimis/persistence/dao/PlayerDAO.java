@@ -3,11 +3,11 @@ package lt.eimis.persistence.dao;
 import lt.eimis.entity.Player;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 
 @ManagedBean(name = "playerBean", eager = true)
-@RequestScoped
+@ViewScoped
 public class PlayerDAO extends CommonDAO<Player>{
 	public PlayerDAO(Class<Player> entityClass) {
 		super(entityClass);

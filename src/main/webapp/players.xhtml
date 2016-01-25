@@ -80,24 +80,24 @@
             <p:outputLabel for="sport" value="Sportas:"/>
             <p:selectOneRadio id="sport" value="#{playerView.newPlayerSport}">
                 <f:selectItem itemLabel="Krepšinis" itemValue="0"/>
-                <f:selectItem itemLabel="Futbolas" itemValue="1" checked="true"/>
+                <f:selectItem itemLabel="Futbolas" itemValue="1"/>
+                <p:ajax listener="#{playerView.onSportChange}" update="positionId,teamSelectBox"/>
             </p:selectOneRadio>
             <p:message for="sport" id="msgSport" display="icon"/>
 
-            <p:outputLabel for="team" value="Komanda:"/>
-            <h:selectOneListbox id="team" style="width:200px;" value="#{playerView.team}">
-                <f:selectItems value="#{teamView.teams}" var="team" itemValue="#{team.teamId}"
+            <p:outputLabel for="teamSelectBox" value="Komanda:"/>
+            <h:selectOneListbox id="teamSelectBox" style="width:200px;" value="#{playerView.team}">
+                <f:selectItems value="#{playerView.teamList}" var="team" itemValue="#{team.teamId}"
                                itemLabel="#{team.teamName}"/>
             </h:selectOneListbox>
-            <p:message for="team" id="msgTeam" display="icon"/>
+            <h:message for="teamSelectBox" id="msgTeamSelectBox" style="color:red"/>
 
-            <p:outputLabel for="position" value="Pozicija:"/>
-            <p:selectOneRadio id="position" value="#{playerView.newPlayerPosition}">
-                <f:selectItem itemLabel="Centras" itemValue="0"/>
-                <f:selectItem itemLabel="Gynėjas" itemValue="1" checked="true"/>
-                <f:selectItem itemLabel="Puolėjas" itemValue="2"/>
+            <p:outputLabel for="positionId" value="Pozicija:"/>
+            <p:selectOneRadio id="positionId" value="#{playerView.newPlayerPosition}">
+                <f:selectItems value="#{playerView.positionList}" var="positionId" itemValue="#{positionId.positionId}"
+                               itemLabel="#{positionId.positionName}"/>
             </p:selectOneRadio>
-            <p:message for="position" id="msgPosition" display="icon"/>
+            <h:message for="positionId" id="msgPosition" style="color:red"/>
 
             <h:outputLabel for="games" value="Sužaista rungtynių: "/>
             <h:inputText id="games" value="#{playerView.newPlayerGames}" converter="javax.faces.Integer"

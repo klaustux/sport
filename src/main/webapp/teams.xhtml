@@ -72,16 +72,16 @@
             </p:inputText>
             <p:message for="teamName" id="msgLastname" display="icon"/>
 
-            <h:outputLabel for="games" value="Games played: "/>
+            <h:outputLabel for="games" value="Sužaista rungtynių:"/>
             <h:inputText id="games" value="#{teamView.newTeamGames}" converter="javax.faces.Integer" required="true">
                 <f:validateDoubleRange minimum="0" label="Rungtynių skaičius:"/>
             </h:inputText>
             <h:message for="games" id="msgGames" style="color:red"/>
 
-            <p:outputLabel for="sport" value="Sport:"/>
+            <p:outputLabel for="sport" value="Sportas:"/>
             <p:selectOneRadio id="sport" value="#{teamView.newTeamSport}">
-                <f:selectItem itemLabel="Basketball" itemValue="0"/>
-                <f:selectItem itemLabel="Football" itemValue="1" checked="true"/>
+                <f:selectItem itemLabel="Krepšinis" itemValue="0"/>
+                <f:selectItem itemLabel="Futbolas" itemValue="1" checked="true"/>
                 <p:ajax listener="#{teamView.onSportChange}" update="leagueDropdown"/>
             </p:selectOneRadio>
             <h:message for="sport" id="msgSport" style="color:red"/>
