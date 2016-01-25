@@ -2,6 +2,9 @@ package lt.eimis.util;
 
 import lt.eimis.entity.SportConstants;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class SportUtils {
 	public static String getSportName(int sportId)
 	{
@@ -50,5 +53,28 @@ public class SportUtils {
 			throw new RuntimeException("Wrong position name in football!");
 		}
 		throw new RuntimeException("Wrong sport id in SportUtils!");
+	}
+
+	public static List<SportPosition> getPositionsBySport(int sportId)
+	{
+		if(sportId == SportConstants.SPORT_ID_BASKETBALL){
+			return Arrays.asList(SportConstants.POSITION_BASKETBALL_CENTER, SportConstants.POSITION_BASKETBALL_FORWARD,
+					SportConstants.POSITION_BASKETBALL_GUARD);
+		}
+		if(sportId == SportConstants.SPORT_ID_FOOTBALL){
+			return Arrays.asList(SportConstants.POSITION_FOOTBALL_GOALKEEPER, SportConstants.POSITION_FOOTBALL_FORWARD,
+					SportConstants.POSITION_FOOTBALL_GUARD, SportConstants.POSITION_FOOTBALL_MIDFIELDER);
+		}
+		throw new RuntimeException("Wrong sport id!");
+	}
+
+	public static int getDefaultPositionForSport(int sportId) {
+		if(SportConstants.SPORT_ID_FOOTBALL == sportId){
+			return SportConstants.POSITION_ID_FOOTBALL_FORWARD;
+		}
+		if(SportConstants.SPORT_ID_BASKETBALL == sportId){
+			return SportConstants.POSITION_ID_BASKETBALL_CENTER;
+		}
+		throw new RuntimeException("Wrong sport id!");
 	}
 }
