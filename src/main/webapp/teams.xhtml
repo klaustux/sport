@@ -21,9 +21,9 @@
             <p:commandButton id="addNewWindowId" value="Pridėti naujam lange" action="addTeam"
                              ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
-            <p:commandButton id="editInlineButtonId" value="Redaguoti inline" action="#{teamView.onRowAdd()}"
-                             ajax="false"
-                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:button icon="ui-icon-pencil" value="Redaguoti" ajax="true"
+                      onclick="jQuery('.ui-state-highlight').find('span.ui-icon-pencil').click(); return false;"/>
+
             <p:commandButton id="deleteButtonId" value="Trinti" action="#{teamView.onDelete()}" ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
         </p:panelGrid>
@@ -71,7 +71,8 @@
                     <f:facet name="input">
                         <h:selectManyListbox id="leagueDropdownInTableId" value="#{teamView.leagues}"
                                              style="width: 200px;">
-                            <f:selectItems value="#{teamView.listTeamsBySport}" var="league" itemValue="#{league.leagueId}"
+                            <f:selectItems value="#{teamView.listTeamsBySport}" var="league"
+                                           itemValue="#{league.leagueId}"
                                            itemLabel="#{league.name}"/>
                         </h:selectManyListbox>
                     </f:facet>

@@ -29,6 +29,11 @@
             <from-outcome>addLeague</from-outcome>
             <to-view-id>/addLeague.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-action>#{leagueView.onRowAdd()}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/leagues.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/addLeague.xhtml</from-view-id>

@@ -11,25 +11,29 @@
 </h:head>
 <h:body>
 
+    <f:facet name="last">
+        <h:outputStylesheet library="css" name="custom.css"></h:outputStylesheet>
+    </f:facet>
+
     <ui:include src="header.xhtml"/>
 
     <h:form id="leagueViewForm" style="width: 1000px">
         <p:growl id="msgs" showDetail="false"/>
-        <p:panelGrid columns="4">
+        <p:panelGrid id="panelGridId" columns="4">
             <p:commandButton id="addInlineButtonId" value="Pridėti inline" action="#{leagueView.onRowAdd()}" ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
             <p:commandButton id="addNewWindowId" value="Pridėti naujam lange" action="addLeague"
                              ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
-            <p:commandButton id="editInlineButtonId" value="Redaguoti inline" action="#{leagueView.onRowAdd()}"
-                             ajax="false"
-                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:button icon="ui-icon-pencil" value="Redaguoti" ajax="true"
+                       onclick="jQuery('.ui-state-highlight').find('span.ui-icon-pencil').click(); return false;"/>
+
             <p:commandButton id="deleteButtonId" value="Trinti" action="#{leagueView.onDelete()}" ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
         </p:panelGrid>
         <p:dataTable id="leagues" var="league" value="#{leagueView.leagues}" editable="true" style="margin-bottom:20px"
                      emptyMessage="" selectionMode="single" selection="#{leagueView.selectedLeague}"
-                     rowKey="#{league.leagueId}">
+                     rowKey="#{league.leagueId}"  widgetVar="rowLeagues">
             <f:facet name="header">
                 Lygos
             </f:facet>

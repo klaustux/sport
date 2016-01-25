@@ -31,24 +31,20 @@ public class LeagueView implements Serializable {
     private int newLeagueSport;
 
     private String[] teams;
-
-	public League getSelectedLeague() {
-		return selectedLeague;
-	}
-
-	public void setSelectedLeague(League selectedLeague) {
-		this.selectedLeague = selectedLeague;
-	}
-
-	private League selectedLeague;
-
+    private League selectedLeague;
     @ManagedProperty("#{leagueBean}")
     private LeagueDAO leagueDAO;
-
     @ManagedProperty("#{teamBean}")
     private TeamDAO teamDAO;
-
     private List<Team> listTeamsBySport = new ArrayList<>();
+
+    public League getSelectedLeague() {
+        return selectedLeague;
+    }
+
+    public void setSelectedLeague(League selectedLeague) {
+        this.selectedLeague = selectedLeague;
+    }
 
     public List<Team> getListTeamsBySport() {
         return listTeamsBySport;
@@ -138,38 +134,41 @@ public class LeagueView implements Serializable {
 
     public String onRowAdd() {
         Set<Team> teamSet = new HashSet<>(0);
-        for (String teamId : teams) {
-            Integer id = Integer.valueOf(teamId);
-            Team team = teamDAO.find(id);
-            teamSet.add(team);
+        if (teams != null) {
+            for (String teamId : teams) {
+                Integer id = Integer.valueOf(teamId);
+                Team team = teamDAO.find(id);
+                teamSet.add(team);
+            }
         }
         League newLeague = new League(0, newLeagueName, newLeagueSport,
                 teamSet);
         leagueDAO.add(newLeague);
         leagues = leagueDAO.getList();
-		return "success";
+        return "success";
     }
 
     public void onSportChange() {
         listTeamsBySport = teamDAO.getListBySport(newLeagueSport);
     }
 
-	public void onDelete(){
-		if(selectedLeague == null)
-		{
-			FacesMessage msg = new FacesMessage("Pasirinkite lygą prieš trindami", null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
-		}
-		try {
-			leagueDAO.deleteById(selectedLeague.getLeagueId());
-		}
-		catch(Exception ex){
-			FacesMessage msg = new FacesMessage("Negalima trinti lygos su komandomis", null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
-		}
-		leagues = leagueDAO.getList();
-	}
+    public void onDelete() {
+        if (selectedLeague == null) {
+            FacesMessage msg = new FacesMessage(
+                    "Pasirinkite lygą prieš trindami", null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return;
+        }
+        try {
+            leagueDAO.deleteById(selectedLeague.getLeagueId());
+        }
+        catch (Exception ex) {
+            FacesMessage msg = new FacesMessage(
+                    "Negalima trinti lygos su komandomis", null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return;
+        }
+        leagues = leagueDAO.getList();
+    }
 
 }
