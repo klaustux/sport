@@ -4,19 +4,22 @@ import lt.eimis.entity.Player;
 import lt.eimis.entity.Team;
 import lt.eimis.persistence.dao.PlayerDAO;
 import lt.eimis.persistence.dao.TeamDAO;
+import lt.eimis.util.SportPosition;
+import lt.eimis.util.SportUtils;
 import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @ManagedBean(name = "playerView")
-@RequestScoped
+@ViewScoped
 public class PlayerView implements Serializable {
 
     private List<Player> players;
@@ -35,11 +38,31 @@ public class PlayerView implements Serializable {
 
     private String team;
 
+    private List<Team> teamList = new ArrayList<>();
+
+    private List<SportPosition> positionList = new ArrayList<>();
+
     @ManagedProperty("#{playerBean}")
     private PlayerDAO playerDAO;
 
     @ManagedProperty("#{teamBean}")
     private TeamDAO teamDAO;
+
+    public List<SportPosition> getPositionList() {
+        return positionList;
+    }
+
+    public void setPositionList(List<SportPosition> positionList) {
+        this.positionList = positionList;
+    }
+
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
+    }
 
     public int getNewPlayerPosition() {
         return newPlayerPosition;
@@ -51,7 +74,7 @@ public class PlayerView implements Serializable {
 
     @PostConstruct
     public void init() {
-        players = playerDAO.getList();
+        refresh();
     }
 
     public List<Player> getPlayers() {
@@ -143,18 +166,31 @@ public class PlayerView implements Serializable {
     }
 
     public void onRowAdd() {
-        if(team == null)
-		{
-			FacesMessage msg = new FacesMessage("Negalima sukurti žaidėjo be komandos", "Nėra komandų");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
-		}
+        if (team == null) {
+            FacesMessage msg = new FacesMessage(
+                    "Negalima sukurti žaidėjo be komandos", "Nėra komandų");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return;
+        }
         Integer id = Integer.valueOf(team);
         Team team = teamDAO.find(id);
         Player newPlayer = new Player(newPlayerFirstName, newPlayerLastName,
                 newPlayerSport, team, newPlayerPosition, newPlayerPoints,
                 newPlayerGames);
         playerDAO.add(newPlayer);
+        refresh();
+    }
+
+    public void onSportChange() {
+        refresh();
+    }
+
+    private void refresh() {
         players = playerDAO.getList();
+        teamList = teamDAO.getListBySport(newPlayerSport);
+        positionList = SportUtils.getPositionsBySport(newPlayerSport);
+        newPlayerPosition = SportUtils
+                .getDefaultPositionForSport(newPlayerSport);
+
     }
 }

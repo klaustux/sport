@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @ManagedBean(name = "leagueView")
-@RequestScoped
+@ViewScoped
 public class LeagueView implements Serializable {
 
     private List<League> leagues;
