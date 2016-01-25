@@ -36,8 +36,10 @@ public class TeamView implements Serializable {
 
     @ManagedProperty("#{teamBean}")
     private TeamDAO teamBean;
+
     @ManagedProperty("#{leagueBean}")
     private LeagueDAO leagueBean;
+
     private List<League> listTeamsBySport = new ArrayList<>();
 
     public Team getSelectedTeam() {
@@ -156,24 +158,25 @@ public class TeamView implements Serializable {
                 leagueSet);
         teamBean.save(newTeam);
         teams = teamBean.getList();
-		return "success";
+        return "success";
     }
 
-	public void onDelete(){
-		if(selectedTeam == null)
-		{
-			FacesMessage msg = new FacesMessage("Pasirinkite komandą prieš trindami", null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
-		}
-		try {
-			teamBean.deleteById(selectedTeam.getTeamId());
-		}
-		catch(Exception ex){
-			FacesMessage msg = new FacesMessage("Negalima trinti komandos su žaidėjais", null);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
-		}
-		teams = teamBean.getList();
-	}
+    public void onDelete() {
+        if (selectedTeam == null) {
+            FacesMessage msg = new FacesMessage(
+                    "Pasirinkite komandą prieš trindami", null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return;
+        }
+        try {
+            teamBean.deleteById(selectedTeam.getTeamId());
+        }
+        catch (Exception ex) {
+            FacesMessage msg = new FacesMessage(
+                    "Negalima trinti komandos su žaidėjais", null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return;
+        }
+        teams = teamBean.getList();
+    }
 }
