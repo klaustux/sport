@@ -12,14 +12,18 @@
 <h:body>
     <ui:include src="header.xhtml"/>
 
+
     <h:form id="tabForm">
         <p:growl id="msgs" showDetail="true"/>
-
-        <p><a href="editTeams.teams.xhtml"> Komandos</a></p>
-        <p><a href="leagues.xhtml"> Lygos</a></p>
-        <p><a href="players.xhtml"> Žaidėjai</a></p>
-        <p><a href="statistics.xhtml"> Statistika</a></p>
-
+        <p:commandButton id="basketballTeamStatsId" value="Krepšinio komandų top 10"  update="statsListId"
+                         action="#{statisticsView.onCreateBasketTeamStats()}" ajax="true"
+                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+        <p:dataList id="statsListId" value="#{statisticsView.stats}" var="entry" type="ordered">
+            <f:facet name="header">
+                Top
+            </f:facet>
+            #{entry.output}
+        </p:dataList>
     </h:form>
 </h:body>
 </html>
