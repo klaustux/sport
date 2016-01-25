@@ -1,6 +1,8 @@
 package lt.eimis.entity;
 
-import lt.eimis.util.SportUtils;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,84 +13,85 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
+import lt.eimis.util.SportUtils;
 
 @Entity
-@Table( name = "leagues" )
-public class League implements Serializable{
+@Table(name = "leagues")
+public class League implements Serializable {
 
-	private int id;
-	private String name;
-	private int sportId;
-	private Set<Team> teams = new HashSet<Team>(0);
-	private transient String sportName;
+    private int leagueId;
 
-	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name = "league_id", unique = true, nullable = false)
-	public int getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    private int sportId;
 
-	@Column(name = "league_name")
-	public String getName() {
-		return name;
-	}
+    private Set<Team> teams = new HashSet<Team>(0);
 
-	public void setName(String leagueName) {
-		this.name = leagueName;
-	}
+    private transient String sportName;
 
-	@Column(name = "sport_id")
-	public int getSportId() {
-		return sportId;
-	}
+    public League() {
+    }
 
-	public void setSportId(int leagueSportId) {
-		this.sportId = leagueSportId;
-	}
+    public League(int leagueId, String leagueName, int leagueSportId) {
+        this.name = leagueName;
+        this.sportId = leagueSportId;
+    }
 
-	public League() {
-	}
+    public League(String leagueName, int leagueSportId) {
+        this.name = leagueName;
+        this.sportId = leagueSportId;
+    }
 
-	public League(int leagueId, String leagueName, int leagueSportId) {
-		this.name = leagueName;
-		this.sportId = leagueSportId;
-	}
+    public League(int id, String name, int sportId, Set<Team> teams) {
+        this.name = name;
+        this.sportId = sportId;
+        this.teams = teams;
+    }
 
-	public League(String leagueName, int leagueSportId) {
-		this.name = leagueName;
-		this.sportId = leagueSportId;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "league_id", unique = true, nullable = false)
+    public int getLeagueId() {
+        return leagueId;
+    }
 
-	public League(int id, String name, int sportId, Set<Team> teams) {
-		this.name = name;
-		this.sportId = sportId;
-		this.teams = teams;
-	}
+    public void setLeagueId(int id) {
+        this.leagueId = id;
+    }
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "leagues")
-	public Set<Team> getTeams() {
-		return this.teams;
-	}
+    @Column(name = "league_name")
+    public String getName() {
+        return name;
+    }
 
-	public void setTeams(Set<Team> teams) {
-		this.teams = teams;
-	}
+    public void setName(String leagueName) {
+        this.name = leagueName;
+    }
 
-	@Transient
-	public String getSportName(){
-		return SportUtils.getSportName(sportId);
-	}
+    @Column(name = "sport_id")
+    public int getSportId() {
+        return sportId;
+    }
 
-	public void setSportName(){}
+    public void setSportId(int leagueSportId) {
+        this.sportId = leagueSportId;
+    }
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "leagues")
+    public Set<Team> getTeams() {
+        return this.teams;
+    }
 
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
+    }
+
+    @Transient
+    public String getSportName() {
+        return SportUtils.getSportName(sportId);
+    }
+
+    public void setSportName() {
+    }
 }

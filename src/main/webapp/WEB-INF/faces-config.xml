@@ -1,11 +1,41 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <application>
         <message-bundle>
             CustomMessages
         </message-bundle>
     </application>
+    <navigation-rule>
+        <from-view-id>/teams.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>addTeam</from-outcome>
+            <to-view-id>/addTeam.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/addTeam.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{teamView.onRowAdd()}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/teams.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/leagues.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>addLeague</from-outcome>
+            <to-view-id>/addLeague.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/addLeague.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{leagueView.onRowAdd()}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/leagues.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

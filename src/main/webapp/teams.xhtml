@@ -15,17 +15,29 @@
 
     <h:form id="viewForm" style="width: 1000px">
         <p:growl id="msgs" showDetail="false"/>
-
+        <p:panelGrid columns="4">
+            <p:commandButton id="addInlineButtonId" value="Pridėti inline" action="#{teamView.onRowAdd()}" ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:commandButton id="addNewWindowId" value="Pridėti naujam lange" action="addTeam"
+                             ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:commandButton id="editInlineButtonId" value="Redaguoti inline" action="#{teamView.onRowAdd()}"
+                             ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:commandButton id="deleteButtonId" value="Trinti" action="#{teamView.onDelete()}" ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+        </p:panelGrid>
         <p:dataTable id="teams" var="team" value="#{teamView.teams}" editable="true" style="margin-bottom:20px"
-                     emptyMessage="">
+                     emptyMessage="" selectionMode="single" selection="#{teamView.selectedTeam}"
+                     rowKey="#{team.teamId}">
             <f:facet name="header">
-                Teams
+                Komandos
             </f:facet>
 
             <p:ajax event="rowEdit" listener="#{teamView.onRowEdit}" update=":viewForm:msgs"/>
             <p:ajax event="rowEditCancel" listener="#{teamView.onRowCancel}" update=":viewForm:msgs"/>
 
-            <p:column headerText="Games played">
+            <p:column headerText="Žaista rungtynių">
                 <p:cellEditor>
                     <f:facet name="output"><h:outputText value="#{team.gamesPlayed}"/></f:facet>
                     <f:facet name="input">
@@ -37,7 +49,7 @@
                 </p:cellEditor>
             </p:column>
 
-            <p:column headerText="Name">
+            <p:column headerText="Pavadinimas">
                 <p:cellEditor>
                     <f:facet name="output"><h:outputText value="#{team.teamName}"/></f:facet>
                     <f:facet name="input"><p:inputText value="#{team.teamName}" style="width:100%"
@@ -45,14 +57,25 @@
                 </p:cellEditor>
             </p:column>
 
-            <p:column headerText="Sport">
+            <p:column headerText="Sportas">
                 <h:outputText value="#{team.sportName}"/>
             </p:column>
 
-            <p:column headerText="Leagues">
-                <p:dataList value="#{team.leagues}" var="league" itemType="none" emptyMessage="">
-                    #{league.name}
-                </p:dataList>
+            <p:column headerText="Lygos">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <p:dataList value="#{team.leagues}" var="league" itemType="none" emptyMessage="">
+                            #{league.name}
+                        </p:dataList>
+                    </f:facet>
+                    <f:facet name="input">
+                        <h:selectManyListbox id="leagueDropdownInTableId" value="#{teamView.leagues}"
+                                             style="width: 200px;">
+                            <f:selectItems value="#{teamView.listTeamsBySport}" var="league" itemValue="#{league.leagueId}"
+                                           itemLabel="#{league.name}"/>
+                        </h:selectManyListbox>
+                    </f:facet>
+                </p:cellEditor>
             </p:column>
 
             <p:column style="width:32px">
@@ -64,42 +87,5 @@
 
         </p:dataTable>
     </h:form>
-    <h:form id="newTeamForm" style="width: 800px">
-        <p:panelGrid columns="3">
-            <h:outputLabel value="Team Name: "/>
-            <p:inputText id="teamName" value="#{teamView.newTeamName}" required="true">
-                <f:validateLength minimum="1"/>
-            </p:inputText>
-            <p:message for="teamName" id="msgLastname" display="icon"/>
-
-            <h:outputLabel for="games" value="Sužaista rungtynių:"/>
-            <h:inputText id="games" value="#{teamView.newTeamGames}" converter="javax.faces.Integer" required="true">
-                <f:validateDoubleRange minimum="0" label="Rungtynių skaičius:"/>
-            </h:inputText>
-            <h:message for="games" id="msgGames" style="color:red"/>
-
-            <p:outputLabel for="sport" value="Sportas:"/>
-            <p:selectOneRadio id="sport" value="#{teamView.newTeamSport}">
-                <f:selectItem itemLabel="Krepšinis" itemValue="0"/>
-                <f:selectItem itemLabel="Futbolas" itemValue="1" checked="true"/>
-                <p:ajax listener="#{teamView.onSportChange}" update="leagueDropdown"/>
-            </p:selectOneRadio>
-            <h:message for="sport" id="msgSport" style="color:red"/>
-
-            <p:outputLabel for="leagueDropdown" value="Lygos:"/>
-            <h:selectManyListbox id="leagueDropdown" value="#{teamView.leagues}" style="width: 200px;">
-                <f:selectItems value="#{teamView.listBySport}" var="league" itemValue="#{league.id}"
-                               itemLabel="#{league.name}"/>
-            </h:selectManyListbox>
-            <h:message for="leagueDropdown" id="msgLeagues" style="color:red"/>
-
-            <f:facet name="footer">
-                <p:commandButton id="addBtn" value="Add" action="#{teamView.onRowAdd()}" ajax="false"
-                                 icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
-            </f:facet>
-        </p:panelGrid>
-    </h:form>
-
-
 </h:body>
 </html>

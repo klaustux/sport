@@ -21,7 +21,7 @@ public class SportConstants {
 	public static final String POSITION_NAME_FOOTBALL_FORWARD = "Puolėjas";
 	public static final String POSITION_NAME_FOOTBALL_GUARD = "Gynėjas";
 	public static final String POSITION_NAME_FOOTBALL_MIDFIELDER = "Saugas";
-	public static final int POSITION_ID_FOOTBALL_GOALKEEPER = -1;
+	public static final int POSITION_ID_FOOTBALL_GOALKEEPER = 0;
 	public static final int POSITION_ID_FOOTBALL_FORWARD = 1;
 	public static final int POSITION_ID_FOOTBALL_GUARD =  2;
 	public static final int POSITION_ID_FOOTBALL_MIDFIELDER = 3;

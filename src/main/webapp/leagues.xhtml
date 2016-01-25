@@ -7,7 +7,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Leagues</title>
+    <title>Lygos</title>
 </h:head>
 <h:body>
 
@@ -15,17 +15,29 @@
 
     <h:form id="leagueViewForm" style="width: 1000px">
         <p:growl id="msgs" showDetail="false"/>
-
+        <p:panelGrid columns="4">
+            <p:commandButton id="addInlineButtonId" value="Pridėti inline" action="#{leagueView.onRowAdd()}" ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:commandButton id="addNewWindowId" value="Pridėti naujam lange" action="addLeague"
+                             ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:commandButton id="editInlineButtonId" value="Redaguoti inline" action="#{leagueView.onRowAdd()}"
+                             ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:commandButton id="deleteButtonId" value="Trinti" action="#{leagueView.onDelete()}" ajax="false"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+        </p:panelGrid>
         <p:dataTable id="leagues" var="league" value="#{leagueView.leagues}" editable="true" style="margin-bottom:20px"
-                     emptyMessage="">
+                     emptyMessage="" selectionMode="single" selection="#{leagueView.selectedLeague}"
+                     rowKey="#{league.leagueId}">
             <f:facet name="header">
-                Leagues
+                Lygos
             </f:facet>
 
             <p:ajax event="rowEdit" listener="#{leagueView.onRowEdit}" update=":leagueViewForm:msgs"/>
             <p:ajax event="rowEditCancel" listener="#{leagueView.onRowCancel}" update=":leagueViewForm:msgs"/>
 
-            <p:column headerText="Name">
+            <p:column headerText="Pavadinimas">
                 <p:cellEditor>
                     <f:facet name="output"><h:outputText value="#{league.name}"/></f:facet>
                     <f:facet name="input"><p:inputText value="#{league.name}" style="width:100%"
@@ -33,11 +45,11 @@
                 </p:cellEditor>
             </p:column>
 
-            <p:column headerText="Sport">
+            <p:column headerText="Sportas">
                 <h:outputText value="#{league.sportName}"/>
             </p:column>
 
-            <p:column headerText="Teams">
+            <p:column headerText="Komandos">
                 <p:dataList value="#{league.teams}" var="team" itemType="none" emptyMessage="">
                     #{team.teamName}
                 </p:dataList>
@@ -51,30 +63,6 @@
             </p:column>
 
         </p:dataTable>
-    </h:form>
-    <h:form id="newLeagueForm" style="width: 800px">
-        <p:panelGrid columns="3">
-            <h:outputLabel value="League Name: "/>
-            <p:inputText id="leagueName" value="#{leagueView.newLeagueName}" required="true">
-                <f:validateLength minimum="1"/>
-            </p:inputText>
-            <p:message for="leagueName" id="msgLastname" display="icon"/>
-
-            <p:outputLabel for="sport" value="Sport:"/>
-            <p:selectOneRadio id="sport" value="#{leagueView.newLeagueSport}">
-                <f:selectItem itemLabel="Basketball" itemValue="0"/>
-                <f:selectItem itemLabel="Football" itemValue="1" checked="true"/>
-            </p:selectOneRadio>
-
-            <h:selectManyListbox value="#{leagueView.teams}">
-                <f:selectItems value="#{teamView.teams}" var="team" itemValue="#{team.teamId}"
-                               itemLabel="#{team.teamName}"/>
-            </h:selectManyListbox>
-            <f:facet name="footer">
-                <p:commandButton id="addBtn" value="Add" action="#{leagueView.onRowAdd()}" ajax="false"
-                                 icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
-            </f:facet>
-        </p:panelGrid>
     </h:form>
 
 

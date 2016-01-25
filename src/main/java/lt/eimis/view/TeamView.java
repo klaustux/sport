@@ -32,34 +32,42 @@ public class TeamView implements Serializable {
 
     private String[] leagues;
 
+    private Team selectedTeam;
+
     @ManagedProperty("#{teamBean}")
     private TeamDAO teamBean;
-
     @ManagedProperty("#{leagueBean}")
     private LeagueDAO leagueBean;
+    private List<League> listTeamsBySport = new ArrayList<>();
 
-	private List<League> listBySport = new ArrayList<>();
+    public Team getSelectedTeam() {
+        return selectedTeam;
+    }
 
-	public List<League> getListBySport() {
-		return listBySport;
-	}
+    public void setSelectedTeam(Team selectedTeam) {
+        this.selectedTeam = selectedTeam;
+    }
 
-	public void setListBySport(List<League> listBySport) {
-		this.listBySport = listBySport;
-	}
+    public List<League> getListTeamsBySport() {
+        return listTeamsBySport;
+    }
 
-	@PostConstruct
+    public void setListTeamsBySport(List<League> listTeamsBySport) {
+        this.listTeamsBySport = listTeamsBySport;
+    }
+
+    @PostConstruct
     public void init() {
         teams = teamBean.getList();
-		listBySport = leagueBean.getListBySport(newTeamSport);
+        listTeamsBySport = leagueBean.getListBySport(newTeamSport);
     }
 
     public List<Team> getTeams() {
         return teams;
     }
 
-    public void setTeamBean(TeamDAO teamBean) {
-        this.teamBean = teamBean;
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 
     public String getNewTeamName() {
@@ -102,16 +110,23 @@ public class TeamView implements Serializable {
         this.leagues = leagues;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
-
     public TeamDAO getTeamBean() {
         return teamBean;
     }
 
+    public void setTeamBean(TeamDAO teamBean) {
+        this.teamBean = teamBean;
+    }
+
     public void onRowEdit(RowEditEvent event) {
         Team team = (Team) event.getObject();
+        Set<League> leagueSet = new HashSet<>(0);
+        for (String leagueId : leagues) {
+            Integer id = Integer.valueOf(leagueId);
+            League league = leagueBean.find(id);
+            leagueSet.add(league);
+        }
+        team.setLeagues(leagueSet);
         teamBean.save(team);
     }
 
@@ -126,11 +141,11 @@ public class TeamView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-	public void onSportChange() {
-		listBySport = leagueBean.getListBySport(newTeamSport);
- 	}
+    public void onSportChange() {
+        listTeamsBySport = leagueBean.getListBySport(newTeamSport);
+    }
 
-    public void onRowAdd() {
+    public String onRowAdd() {
         Set<League> leagueSet = new HashSet<>(0);
         for (String leagueId : leagues) {
             Integer id = Integer.valueOf(leagueId);
@@ -141,5 +156,24 @@ public class TeamView implements Serializable {
                 leagueSet);
         teamBean.save(newTeam);
         teams = teamBean.getList();
+		return "success";
     }
+
+	public void onDelete(){
+		if(selectedTeam == null)
+		{
+			FacesMessage msg = new FacesMessage("Pasirinkite komandą prieš trindami", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		try {
+			teamBean.deleteById(selectedTeam.getTeamId());
+		}
+		catch(Exception ex){
+			FacesMessage msg = new FacesMessage("Negalima trinti komandos su žaidėjais", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		teams = teamBean.getList();
+	}
 }

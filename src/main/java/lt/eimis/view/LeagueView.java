@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,15 +32,36 @@ public class LeagueView implements Serializable {
 
     private String[] teams;
 
+	public League getSelectedLeague() {
+		return selectedLeague;
+	}
+
+	public void setSelectedLeague(League selectedLeague) {
+		this.selectedLeague = selectedLeague;
+	}
+
+	private League selectedLeague;
+
     @ManagedProperty("#{leagueBean}")
     private LeagueDAO leagueDAO;
 
     @ManagedProperty("#{teamBean}")
     private TeamDAO teamDAO;
 
+    private List<Team> listTeamsBySport = new ArrayList<>();
+
+    public List<Team> getListTeamsBySport() {
+        return listTeamsBySport;
+    }
+
+    public void setListTeamsBySport(List<Team> listTeamsBySport) {
+        this.listTeamsBySport = listTeamsBySport;
+    }
+
     @PostConstruct
     public void init() {
         leagues = leagueDAO.getList();
+        listTeamsBySport = teamDAO.getListBySport(newLeagueSport);
     }
 
     public List<League> getLeagues() {
@@ -104,7 +126,7 @@ public class LeagueView implements Serializable {
     }
 
     public void deleteLeague(League league) {
-        leagueDAO.deleteById(league.getId());
+        leagueDAO.deleteById(league.getLeagueId());
         leagues = leagueDAO.getList();
     }
 
@@ -114,7 +136,7 @@ public class LeagueView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onRowAdd() {
+    public String onRowAdd() {
         Set<Team> teamSet = new HashSet<>(0);
         for (String teamId : teams) {
             Integer id = Integer.valueOf(teamId);
@@ -125,5 +147,29 @@ public class LeagueView implements Serializable {
                 teamSet);
         leagueDAO.add(newLeague);
         leagues = leagueDAO.getList();
+		return "success";
     }
+
+    public void onSportChange() {
+        listTeamsBySport = teamDAO.getListBySport(newLeagueSport);
+    }
+
+	public void onDelete(){
+		if(selectedLeague == null)
+		{
+			FacesMessage msg = new FacesMessage("Pasirinkite lygą prieš trindami", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		try {
+			leagueDAO.deleteById(selectedLeague.getLeagueId());
+		}
+		catch(Exception ex){
+			FacesMessage msg = new FacesMessage("Negalima trinti lygos su komandomis", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		leagues = leagueDAO.getList();
+	}
+
 }
