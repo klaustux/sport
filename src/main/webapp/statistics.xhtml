@@ -10,40 +10,48 @@
 <h:head>
 </h:head>
 <h:body>
+    <f:facet name="last">
+        <h:outputStylesheet library="css" name="custom.css"></h:outputStylesheet>
+    </f:facet>
+
     <ui:include src="header.xhtml"/>
 
 
     <h:form id="tabForm">
         <p:growl id="msgs" showDetail="true"/>
-        <p:commandButton id="basketballTeamStatsId" value="Krepšinio komandų top 10"  update="statsListId"
-                         action="#{statisticsView.onCreateBasketTeamStats}" ajax="true"
-                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
 
-        <p:commandButton id="basketballPlayersStatsId" value="Krepšinio žaidėjų top 10"  update="statsListId"
-                         action="#{statisticsView.onCreateBasketPlayersStats}" ajax="true"
-                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+        <p:panelGrid columns="6" style="width: 1000px;">
+            <p:commandButton id="basketballTeamStatsId" value="Krepšinio komandų top 10" update="statsListId"
+                             action="#{statisticsView.onCreateBasketTeamStats}" ajax="true"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
 
-        <p:commandButton id="basketballLeaguesStatsId" value="Krepšinio lygų top 10"  update="statsListId"
-                         action="#{statisticsView.onCreateBasketballLeagueStats()}" ajax="true"
-                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+            <p:commandButton id="basketballPlayersStatsId" value="Krepšinio žaidėjų top 10" update="statsListId"
+                             action="#{statisticsView.onCreateBasketPlayersStats}" ajax="true"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
 
-        <p:commandButton id="footballTeamStatsId" value="Futbolo komandų top 10"  update="statsListId"
-                         action="#{statisticsView.onCreateFootballTeamStats}" ajax="true"
-                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+            <p:commandButton id="basketballLeaguesStatsId" value="Krepšinio lygų top 10" update="statsListId"
+                             action="#{statisticsView.onCreateBasketballLeagueStats()}" ajax="true"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
 
-        <p:commandButton id="footballPlayerStatsId" value="Futbolo žaidėjų top 10"  update="statsListId"
-                         action="#{statisticsView.onCreateFootballPlayerStats}" ajax="true"
-                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+            <p:commandButton id="footballTeamStatsId" value="Futbolo komandų top 10" update="statsListId"
+                             action="#{statisticsView.onCreateFootballTeamStats}" ajax="true"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
 
-        <p:commandButton id="footballLeagueStatsId" value="Futbolo lygų top 10"  update="statsListId"
-                         action="#{statisticsView.onCreateFootballLeagueStats()}" ajax="true"
-                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+            <p:commandButton id="footballPlayerStatsId" value="Futbolo žaidėjų top 10" update="statsListId"
+                             action="#{statisticsView.onCreateFootballPlayerStats}" ajax="true"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+
+            <p:commandButton id="footballLeagueStatsId" value="Futbolo lygų top 10" update="statsListId"
+                             action="#{statisticsView.onCreateFootballLeagueStats()}" ajax="true"
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"
+                             onclick="jQuery('.ui-sortable-column').click();"/>
+        </p:panelGrid>
         <p:dataTable id="statsListId" value="#{statisticsView.sortedStats}" var="entry"
-                    emptyMessage="" style="margin-bottom:40px"  sortOrder="descending" >
+                     emptyMessage="" style="margin-bottom:40px; width:1000px;" sortOrder="descending">
             <f:facet name="header">
                 Top 10
             </f:facet>
-            <p:column headerText="Top" sortBy="#{entry.sortKey}">
+            <p:column id="headerId"  sortBy="#{entry.sortKey}">
                 <h:outputText value="#{entry.output}"/>
             </p:column>
 

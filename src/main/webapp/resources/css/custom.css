@@ -1,4 +1,4 @@
-.companyHeaderGrid.ui-panelgrid>*>tr,
-.companyHeaderGrid.ui-panelgrid .ui-panelgrid-cell {
+.ui-panelgrid>*>tr,
+.ui-panelgrid .ui-panelgrid-cell {
     border: none;
 }
