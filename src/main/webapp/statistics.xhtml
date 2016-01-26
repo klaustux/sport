@@ -17,7 +17,7 @@
     <ui:include src="header.xhtml"/>
 
 
-    <h:form id="tabForm">
+    <h:form id="tabForm" style="width: 1000px;">
         <p:growl id="msgs" showDetail="true"/>
 
         <p:panelGrid columns="6" style="width: 1000px;">
@@ -43,19 +43,16 @@
 
             <p:commandButton id="footballLeagueStatsId" value="Futbolo lygų top 10" update="statsListId"
                              action="#{statisticsView.onCreateFootballLeagueStats()}" ajax="true"
-                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"
-                             onclick="jQuery('.ui-sortable-column').click();"/>
+                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+
         </p:panelGrid>
-        <p:dataTable id="statsListId" value="#{statisticsView.sortedStats}" var="entry"
-                     emptyMessage="" style="margin-bottom:40px; width:1000px;" sortOrder="descending">
+        <p:dataList  id="statsListId" value="#{statisticsView.sortedStats}"
+                     var="entry" type="definition" emptyMessage="" style="width: 1000px;">
             <f:facet name="header">
                 Top 10
             </f:facet>
-            <p:column id="headerId"  sortBy="#{entry.sortKey}">
-                <h:outputText value="#{entry.output}"/>
-            </p:column>
-
-        </p:dataTable>
+            #{entry.prefix}, #{entry.output}
+        </p:dataList>
     </h:form>
 </h:body>
 </html>

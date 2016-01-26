@@ -36,15 +36,25 @@ public class StatisticsRow implements Serializable, Comparable<StatisticsRow> {
 
     private float sortKey;
 
+    private String prefix;
+
     public StatisticsRow() {
     }
 
-    private static float average(StatisticsRow row) {
+    private float average(StatisticsRow row) {
         if (row.games == 0) {
             return 0;
         }
         float f = row.getResultInt();
         return f / row.getGames();
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     public float getSortKey() {
@@ -224,7 +234,9 @@ public class StatisticsRow implements Serializable, Comparable<StatisticsRow> {
     @Override
     public int compareTo(StatisticsRow o) {
         if (sportId == SportConstants.SPORT_ID_BASKETBALL) {
-            return resultInt - o.getResultInt();
+			Integer current = new Integer(resultInt);
+			Integer external = new Integer(o.getResultInt());
+            return current.compareTo(external);
         }
         if (sportId == SportConstants.SPORT_ID_FOOTBALL) {
             return Float.compare(average(this), average(o));
