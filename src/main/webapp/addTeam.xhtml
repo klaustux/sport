@@ -12,7 +12,6 @@
 
     <f:view>
 
-        <h:form id="viewForm" style="width: 1000px">
             <p:growl id="msgs" showDetail="false"/>
             <h:form id="newTeamForm" style="width: 800px">
                 <p:panelGrid columns="3">
@@ -44,6 +43,10 @@
                     </h:selectManyListbox>
                     <h:message for="leagueDropdownAdd" id="msgLeagues" style="color:red"/>
 
+
+
+
+
                     <f:facet name="footer">
                         <p:commandButton id="addBtn" value="Sukurti komandą" action="#{teamView.onRowAdd()}"
                                          ajax="false"
@@ -52,7 +55,6 @@
                     </f:facet>
                 </p:panelGrid>
             </h:form>
-        </h:form>
     </f:view>
 </h:body>
 </html>
