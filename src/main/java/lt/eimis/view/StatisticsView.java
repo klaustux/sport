@@ -8,12 +8,12 @@ import lt.eimis.entity.Team;
 import lt.eimis.persistence.dao.LeagueDAO;
 import lt.eimis.persistence.dao.PlayerDAO;
 import lt.eimis.persistence.dao.TeamDAO;
+import lt.eimis.util.StatsGenerator;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -108,41 +108,45 @@ public class StatisticsView implements Serializable {
 				'}';
 	}
 
-	public void onGenerateTeamStats(int sportId){
-		stats = new HashSet<>(0);
+	public void generateTeamStats(int sportId){
 		List<Team> teams = teamDAO.getListBySport(sportId);
-		for (Team team : teams) {
-			StatisticsRow statRow = generateTeamStats(team);
-
-			if(SportConstants.SPORT_ID_FOOTBALL == sportId)
-			{
-				if(team.getGamesPlayed() > 0) {
-					statRow.setResultFloat(statRow.getResultInt() / team.getGamesPlayed());
-				}
-			}
-			statRow.generateStatOutput(sportId);
-			stats.add(statRow);
-		}
+		stats = StatsGenerator.generateTeamsStats(teams, sportId);
 	}
 
-	private StatisticsRow generateTeamStats(Team team) {
-		int points = 0;
-		for (Player player : team.getPlayers()) {
-			points += player.getPoints();
-		}
-		StatisticsRow row = new StatisticsRow();
-		row.setTeamName(team.getTeamName());
-		row.setStatisticsType(StatisticsRow.TEAM_STATS);
-		row.setResultInt(points);
-		List<String> leagueNames = new ArrayList<>();
-		for (League league : team.getLeagues()) {
-			leagueNames.add(league.getName());
-		}
-		row.setLeagues(leagueNames);
-		return row;
+
+	public void generatePlayerStats(int sportId){
+		List<Player> players = playerDAO.getListBySport(sportId);
+		stats = StatsGenerator.generatePlayersStats(players, sportId);
 	}
 
 	public void onCreateBasketTeamStats(){
-		onGenerateTeamStats(SportConstants.SPORT_ID_BASKETBALL);
+		generateTeamStats(SportConstants.SPORT_ID_BASKETBALL);
 	}
+
+	public void onCreateFootballTeamStats(){
+		generateTeamStats(SportConstants.SPORT_ID_FOOTBALL);
+	}
+
+	public void onCreateBasketPlayersStats(){
+		generatePlayerStats(SportConstants.SPORT_ID_BASKETBALL);
+	}
+
+	public void onCreateFootballPlayerStats(){
+		generatePlayerStats(SportConstants.SPORT_ID_FOOTBALL);
+	}
+
+	public void onCreateFootballLeagueStats(){
+		generateLeagueStats(SportConstants.SPORT_ID_FOOTBALL);
+	}
+
+	public void onCreateBasketballLeagueStats(){
+		generateLeagueStats(SportConstants.SPORT_ID_BASKETBALL);
+	}
+
+	private void generateLeagueStats(int sportId) {
+		List<League> leagues = leagueDAO.getListBySport(sportId);
+		stats = StatsGenerator.generateLeaguesStats(leagues, sportId);
+	}
+
+
 }

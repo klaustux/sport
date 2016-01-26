@@ -4,108 +4,126 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by eimis on 25/01/16.
- */
 public class StatisticsRow implements Serializable {
 
-	public static final int TEAM_STATS = 0;
-	public final int PLAYER_STATS = 1;
-	public final int LEAGUE_STATS = 2;
+    public static final int TEAM_STATS = 0;
 
-	private String output;
-	private int index;
-	private String firstName;
-	private String lastName;
-	private String teamName;
-	private String leagueName;
-	private List<String> leagues = new ArrayList<>();
-	private int resultInt;
-	private float resultFloat;
-	private int statisticsType;
+    public static final int PLAYER_STATS = 1;
 
-	public StatisticsRow() {
-	}
+    public static final int LEAGUE_STATS = 2;
 
-	public String getOutput() {
-		return output;
-	}
+    private String output;
 
-	public void setOutput(String output) {
-		this.output = output;
-	}
+    private int index;
 
-	public int getIndex() {
-		return index;
-	}
+    private String firstName;
 
-	public void setIndex(int index) {
-		this.index = index;
-	}
+    private String lastName;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    private String teamName;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    private String leagueName;
 
-	public String getLastName() {
-		return lastName;
-	}
+    private List<String> leagues = new ArrayList<>();
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    private int resultInt;
 
-	public String getTeamName() {
-		return teamName;
-	}
+    private int statisticsType;
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
-	}
+    private int sportId;
 
-	public String getLeagueName() {
-		return leagueName;
-	}
+    private int games;
 
-	public void setLeagueName(String leagueName) {
-		this.leagueName = leagueName;
-	}
+    public StatisticsRow() {
+    }
 
-	public List<String> getLeagues() {
-		return leagues;
-	}
+    public int getSportId() {
+        return sportId;
+    }
 
-	public void setLeagues(List<String> leagues) {
-		this.leagues = leagues;
-	}
+    public void setSportId(int sportId) {
+        this.sportId = sportId;
+    }
 
-	public int getResultInt() {
-		return resultInt;
-	}
+    public String getOutput() {
+        return output;
+    }
 
-	public void setResultInt(int resultInt) {
-		this.resultInt = resultInt;
-	}
+    public void setOutput(String output) {
+        this.output = output;
+    }
 
-	public float getResultFloat() {
-		return resultFloat;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	public void setResultFloat(float resultFloat) {
-		this.resultFloat = resultFloat;
-	}
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
-	public int getStatisticsType() {
-		return statisticsType;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setStatisticsType(int statisticsType) {
-		this.statisticsType = statisticsType;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getLeagueName() {
+        return leagueName;
+    }
+
+    public void setLeagueName(String leagueName) {
+        this.leagueName = leagueName;
+    }
+
+    public List<String> getLeagues() {
+        return leagues;
+    }
+
+    public void setLeagues(List<String> leagues) {
+        this.leagues = leagues;
+    }
+
+    public int getResultInt() {
+        return resultInt;
+    }
+
+    public void setResultInt(int resultInt) {
+        this.resultInt = resultInt;
+    }
+
+    public int getStatisticsType() {
+        return statisticsType;
+    }
+
+    public void setStatisticsType(int statisticsType) {
+        this.statisticsType = statisticsType;
+    }
+
+    public int getGames() {
+        return games;
+    }
+
+    public void setGames(int games) {
+        this.games = games;
+    }
 
 	@Override
 	public boolean equals(Object o) {
@@ -124,10 +142,13 @@ public class StatisticsRow implements Serializable {
 		if (resultInt != that.resultInt) {
 			return false;
 		}
-		if (Float.compare(that.resultFloat, resultFloat) != 0) {
+		if (statisticsType != that.statisticsType) {
 			return false;
 		}
-		if (statisticsType != that.statisticsType) {
+		if (sportId != that.sportId) {
+			return false;
+		}
+		if (games != that.games) {
 			return false;
 		}
 		if (output != null ? !output.equals(that.output) : that.output != null) {
@@ -159,18 +180,16 @@ public class StatisticsRow implements Serializable {
 		result = 31 * result + (leagueName != null ? leagueName.hashCode() : 0);
 		result = 31 * result + (leagues != null ? leagues.hashCode() : 0);
 		result = 31 * result + resultInt;
-		result = 31 * result + (resultFloat != +0.0f ? Float.floatToIntBits(resultFloat) : 0);
 		result = 31 * result + statisticsType;
+		result = 31 * result + sportId;
+		result = 31 * result + games;
 		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "StatisticsRow{" +
-				"TEAM_STATS=" + TEAM_STATS +
-				", PLAYER_STATS=" + PLAYER_STATS +
-				", LEAGUE_STATS=" + LEAGUE_STATS +
-				", output='" + output + '\'' +
+				"output='" + output + '\'' +
 				", index=" + index +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
@@ -178,30 +197,9 @@ public class StatisticsRow implements Serializable {
 				", leagueName='" + leagueName + '\'' +
 				", leagues=" + leagues +
 				", resultInt=" + resultInt +
-				", resultFloat=" + resultFloat +
 				", statisticsType=" + statisticsType +
+				", sportId=" + sportId +
+				", games=" + games +
 				'}';
-	}
-
-
-	public void generateStatOutput(int sportId) {
-		final String DELIMITER = ",";
-		if (this.statisticsType == TEAM_STATS) {
-			StringBuffer sb = new StringBuffer();
-			sb.append(teamName).append(DELIMITER);
-			for (String league : leagues) {
-				sb.append(league).append(DELIMITER);
-			}
-			if (sportId == SportConstants.SPORT_ID_BASKETBALL) {
-				sb.append(this.getResultInt());
-			}
-			else if (sportId == SportConstants.SPORT_ID_FOOTBALL) {
-				sb.append(this.getResultFloat());
-			}
-			else {
-				throw new RuntimeException("Unknown sport while generating report!");
-			}
-			output = sb.toString();
-		}
 	}
 }

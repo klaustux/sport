@@ -16,12 +16,29 @@
     <h:form id="tabForm">
         <p:growl id="msgs" showDetail="true"/>
         <p:commandButton id="basketballTeamStatsId" value="Krepšinio komandų top 10"  update="statsListId"
-                         action="#{statisticsView.onCreateBasketTeamStats()}" ajax="true"
+                         action="#{statisticsView.onCreateBasketTeamStats}" ajax="true"
                          icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
-        <p:dataList id="statsListId" value="#{statisticsView.stats}" var="entry" type="ordered">
-            <f:facet name="header">
-                Top
-            </f:facet>
+
+        <p:commandButton id="basketballPlayersStatsId" value="Krepšinio žaidėjų top 10"  update="statsListId"
+                         action="#{statisticsView.onCreateBasketPlayersStats}" ajax="true"
+                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+
+        <p:commandButton id="basketballLeaguesStatsId" value="Krepšinio lygų top 10"  update="statsListId"
+                         action="#{statisticsView.onCreateBasketballLeagueStats()}" ajax="true"
+                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+
+        <p:commandButton id="footballTeamStatsId" value="Futbolo komandų top 10"  update="statsListId"
+                         action="#{statisticsView.onCreateFootballTeamStats}" ajax="true"
+                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+
+        <p:commandButton id="footballPlayerStatsId" value="Futbolo žaidėjų top 10"  update="statsListId"
+                         action="#{statisticsView.onCreateFootballPlayerStats}" ajax="true"
+                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+
+        <p:commandButton id="footballLeagueStatsId" value="Futbolo lygų top 10"  update="statsListId"
+                         action="#{statisticsView.onCreateFootballLeagueStats()}" ajax="true"
+                         icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
+        <p:dataList id="statsListId" value="#{statisticsView.stats}" var="entry" type="ordered" emptyMessage="">
             #{entry.output}
         </p:dataList>
     </h:form>

@@ -62,7 +62,7 @@ import javax.persistence.Transient;
 		this.lastName = lastName;
 	}
 
-	@Column(name = "player_sport_id", nullable = false)
+	@Column(name = "sport_id", nullable = false)
 	public int getSportId() {
 		return sportId;
 	}
