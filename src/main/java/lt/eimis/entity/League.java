@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -78,10 +81,20 @@ public class League implements Serializable {
         this.sportId = leagueSportId;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "leagues")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "leagues")
     public Set<Team> getTeams() {
         return this.teams;
     }
+
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name = "teams_leagues", joinColumns = { @JoinColumn(name = "league_id", nullable = false, updatable = false) },
+//            inverseJoinColumns = { @JoinColumn(name = "team_id", nullable = false, updatable = false) })
+//    public Set<Team> getTeams() {
+//        return this.teams;
+//    }
+
+
+
 
     public void setTeams(Set<Team> teams) {
         this.teams = teams;
