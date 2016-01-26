@@ -165,5 +165,10 @@ public class StatisticsView implements Serializable {
     public void sortStatistics() {
         sortedStats = new ArrayList<>(stats);
         Collections.reverse(sortedStats);
+		//nupjauti iki 10
+		if(sortedStats.size() > 10)
+		{
+			sortedStats.subList(10, sortedStats.size()).clear();
+		}
     }
 }
