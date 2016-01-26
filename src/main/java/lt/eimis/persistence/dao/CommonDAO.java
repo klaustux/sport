@@ -32,12 +32,13 @@ abstract class CommonDAO<T> implements Serializable {
         EntityManager entityManager = HibernateUtil.getEntityManager();
         Query query = entityManager
                 .createQuery("SELECT e FROM " + entityClass.getName()
-                             + " e WHERE sport_id = :sportId");
+                        + " e WHERE sport_id = :sportId");
         query.setParameter("sportId", sportId);
         return (List<T>) query.getResultList();
     }
 
-	public void setListBySport(List<T> list){};
+    public void setListBySport(List<T> list) {
+    }
 
     public T find(int entityID) {
         return HibernateUtil.getEntityManager().find(entityClass, entityID);
@@ -60,7 +61,4 @@ abstract class CommonDAO<T> implements Serializable {
         entityManager.close();
     }
 
-    public void add(T t) {
-        save(t);
-    }
 }

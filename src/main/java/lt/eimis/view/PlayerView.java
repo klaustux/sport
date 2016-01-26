@@ -177,7 +177,7 @@ public class PlayerView implements Serializable {
         Player newPlayer = new Player(newPlayerFirstName, newPlayerLastName,
                 newPlayerSport, team, newPlayerPosition, newPlayerPoints,
                 newPlayerGames);
-        playerDAO.add(newPlayer);
+        playerDAO.save(newPlayer);
         refresh();
     }
 
