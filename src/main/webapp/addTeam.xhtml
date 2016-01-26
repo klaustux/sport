@@ -33,16 +33,16 @@
                     <p:selectOneRadio id="sport" value="#{teamView.newTeamSport}">
                         <f:selectItem itemLabel="Krepšinis" itemValue="0"/>
                         <f:selectItem itemLabel="Futbolas" itemValue="1"/>
-                        <p:ajax listener="#{teamView.onSportChange}" update="leagueDropdown"/>
+                        <p:ajax listener="#{teamView.onSportChange}" update="leagueDropdownAdd"/>
                     </p:selectOneRadio>
                     <h:message for="sport" id="msgSport" style="color:red"/>
 
-                    <p:outputLabel for="leagueDropdown" value="Lygos:"/>
-                    <h:selectManyListbox id="leagueDropdown" value="#{teamView.leagues}" style="width: 200px;">
+                    <p:outputLabel for="leagueDropdownAdd" value="Lygos:"/>
+                    <h:selectManyListbox id="leagueDropdownAdd" value="#{teamView.leagues}" style="width: 200px;">
                         <f:selectItems value="#{teamView.listTeamsBySport}" var="league" itemValue="#{league.leagueId}"
                                        itemLabel="#{league.name}"/>
                     </h:selectManyListbox>
-                    <h:message for="leagueDropdown" id="msgLeagues" style="color:red"/>
+                    <h:message for="leagueDropdownAdd" id="msgLeagues" style="color:red"/>
 
                     <f:facet name="footer">
                         <p:commandButton id="addBtn" value="Sukurti komandą" action="#{teamView.onRowAdd()}"

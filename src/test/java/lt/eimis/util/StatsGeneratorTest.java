@@ -52,7 +52,7 @@ public class StatsGeneratorTest {
 	@Test
 	public void testGenerateTeamStatOutput() throws Exception {
 		String expectedResult = "Komanda,0.33";
-		StatisticsRow row = StatsGenerator.generateTeamStats(team);
+		StatisticsRow row = StatsGenerator.collectTeamStats(team);
 		row.setSportId(SportConstants.SPORT_ID_FOOTBALL);
 		StatsGenerator.generateTeamStatOutput(row);
 		assertEquals(expectedResult, row.getOutput());
@@ -61,7 +61,7 @@ public class StatsGeneratorTest {
 	@Test
 	public void testGeneratePlayerStatOutput() throws Exception {
 		String expectedResult = "F,N,0.33";
-		StatisticsRow row = StatsGenerator.generatePlayerStats(player1);
+		StatisticsRow row = StatsGenerator.collectPlayerStats(player1);
 		row.setSportId(SportConstants.SPORT_ID_FOOTBALL);
 		StatsGenerator.generatePlayerStatOutput(row);
 		assertEquals(expectedResult, row.getOutput());
@@ -73,7 +73,11 @@ public class StatsGeneratorTest {
 		int sport = 1;
 		int games = 3;
 		int score = 1;
-		String result = StatsGenerator.getResultString(sport, games, score);
+		StatisticsRow row = new StatisticsRow();
+		row.setGames(games);
+		row.setSportId(1);
+		row.setResultInt(1);
+		String result = StatsGenerator.getResultString(row);
 		assertEquals(expected, result);
 	}
 

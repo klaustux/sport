@@ -14,6 +14,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,131 +24,146 @@ import java.util.Set;
 @ViewScoped
 public class StatisticsView implements Serializable {
 
-	@ManagedProperty("#{teamBean}")
-	private TeamDAO teamDAO;
+    @ManagedProperty("#{teamBean}")
+    private TeamDAO teamDAO;
 
-	@ManagedProperty("#{leagueBean}")
-	private LeagueDAO leagueDAO;
+    @ManagedProperty("#{leagueBean}")
+    private LeagueDAO leagueDAO;
 
-	@ManagedProperty("#{playerBean}")
-	private PlayerDAO playerDAO;
+    @ManagedProperty("#{playerBean}")
+    private PlayerDAO playerDAO;
 
-	private Set<StatisticsRow> stats = new HashSet<>(0);
+    private Set<StatisticsRow> stats = new HashSet<>(0);
 
-	public TeamDAO getTeamDAO() {
-		return teamDAO;
-	}
+    private List<StatisticsRow> sortedStats = new ArrayList<>();
 
-	public void setTeamDAO(TeamDAO teamDAO) {
-		this.teamDAO = teamDAO;
-	}
+    public List<StatisticsRow> getSortedStats() {
+        return sortedStats;
+    }
 
-	public LeagueDAO getLeagueDAO() {
-		return leagueDAO;
-	}
+    public void setSortedStats(List<StatisticsRow> sortedStats) {
+        this.sortedStats = sortedStats;
+    }
 
-	public void setLeagueDAO(LeagueDAO leagueDAO) {
-		this.leagueDAO = leagueDAO;
-	}
+    public TeamDAO getTeamDAO() {
+        return teamDAO;
+    }
 
-	public PlayerDAO getPlayerDAO() {
-		return playerDAO;
-	}
+    public void setTeamDAO(TeamDAO teamDAO) {
+        this.teamDAO = teamDAO;
+    }
 
-	public void setPlayerDAO(PlayerDAO playerDAO) {
-		this.playerDAO = playerDAO;
-	}
+    public LeagueDAO getLeagueDAO() {
+        return leagueDAO;
+    }
 
-	public Set<StatisticsRow> getStats() {
-		return stats;
-	}
+    public void setLeagueDAO(LeagueDAO leagueDAO) {
+        this.leagueDAO = leagueDAO;
+    }
 
-	public void setStats(Set<StatisticsRow> stats) {
-		this.stats = stats;
-	}
+    public PlayerDAO getPlayerDAO() {
+        return playerDAO;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+    public void setPlayerDAO(PlayerDAO playerDAO) {
+        this.playerDAO = playerDAO;
+    }
 
-		StatisticsView that = (StatisticsView) o;
+    public Set<StatisticsRow> getStats() {
+        return stats;
+    }
 
-		if (teamDAO != null ? !teamDAO.equals(that.teamDAO) : that.teamDAO != null) {
-			return false;
-		}
-		if (leagueDAO != null ? !leagueDAO.equals(that.leagueDAO) : that.leagueDAO != null) {
-			return false;
-		}
-		if (playerDAO != null ? !playerDAO.equals(that.playerDAO) : that.playerDAO != null) {
-			return false;
-		}
-		return stats != null ? stats.equals(that.stats) : that.stats == null;
+    public void setStats(Set<StatisticsRow> stats) {
+        this.stats = stats;
+    }
 
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-	@Override
-	public int hashCode() {
-		int result = teamDAO != null ? teamDAO.hashCode() : 0;
-		result = 31 * result + (leagueDAO != null ? leagueDAO.hashCode() : 0);
-		result = 31 * result + (playerDAO != null ? playerDAO.hashCode() : 0);
-		result = 31 * result + (stats != null ? stats.hashCode() : 0);
-		return result;
-	}
+        StatisticsView that = (StatisticsView) o;
 
-	@Override
-	public String toString() {
-		return "StatisticsView{" +
-				"teamDAO=" + teamDAO +
-				", leagueDAO=" + leagueDAO +
-				", playerDAO=" + playerDAO +
-				", stats=" + stats +
-				'}';
-	}
+        if (teamDAO != null ? !teamDAO.equals(that.teamDAO)
+                            : that.teamDAO != null) {
+            return false;
+        }
+        if (leagueDAO != null ? !leagueDAO.equals(that.leagueDAO)
+                              : that.leagueDAO != null) {
+            return false;
+        }
+        if (playerDAO != null ? !playerDAO.equals(that.playerDAO)
+                              : that.playerDAO != null) {
+            return false;
+        }
+        return stats != null ? stats.equals(that.stats) : that.stats == null;
 
-	public void generateTeamStats(int sportId){
-		List<Team> teams = teamDAO.getListBySport(sportId);
-		stats = StatsGenerator.generateTeamsStats(teams, sportId);
-	}
+    }
 
+    @Override
+    public int hashCode() {
+        int result = teamDAO != null ? teamDAO.hashCode() : 0;
+        result = 31 * result + (leagueDAO != null ? leagueDAO.hashCode() : 0);
+        result = 31 * result + (playerDAO != null ? playerDAO.hashCode() : 0);
+        result = 31 * result + (stats != null ? stats.hashCode() : 0);
+        return result;
+    }
 
-	public void generatePlayerStats(int sportId){
-		List<Player> players = playerDAO.getListBySport(sportId);
-		stats = StatsGenerator.generatePlayersStats(players, sportId);
-	}
+    @Override
+    public String toString() {
+        return "StatisticsView{" + "teamDAO=" + teamDAO + ", leagueDAO="
+               + leagueDAO + ", playerDAO=" + playerDAO + ", stats=" + stats
+               + '}';
+    }
 
-	public void onCreateBasketTeamStats(){
-		generateTeamStats(SportConstants.SPORT_ID_BASKETBALL);
-	}
+    public void generateTeamStats(int sportId) {
+        List<Team> teams = teamDAO.getListBySport(sportId);
+        stats = StatsGenerator.generateTeamsStats(teams, sportId);
+		sortStatistics();
+    }
 
-	public void onCreateFootballTeamStats(){
-		generateTeamStats(SportConstants.SPORT_ID_FOOTBALL);
-	}
+    public void generatePlayerStats(int sportId) {
+        List<Player> players = playerDAO.getListBySport(sportId);
+        stats = StatsGenerator.generatePlayersStats(players, sportId);
+        sortStatistics();
+    }
 
-	public void onCreateBasketPlayersStats(){
-		generatePlayerStats(SportConstants.SPORT_ID_BASKETBALL);
-	}
+    public void onCreateBasketTeamStats() {
+        generateTeamStats(SportConstants.SPORT_ID_BASKETBALL);
+    }
 
-	public void onCreateFootballPlayerStats(){
-		generatePlayerStats(SportConstants.SPORT_ID_FOOTBALL);
-	}
+    public void onCreateFootballTeamStats() {
+        generateTeamStats(SportConstants.SPORT_ID_FOOTBALL);
+    }
 
-	public void onCreateFootballLeagueStats(){
-		generateLeagueStats(SportConstants.SPORT_ID_FOOTBALL);
-	}
+    public void onCreateBasketPlayersStats() {
+        generatePlayerStats(SportConstants.SPORT_ID_BASKETBALL);
+    }
 
-	public void onCreateBasketballLeagueStats(){
-		generateLeagueStats(SportConstants.SPORT_ID_BASKETBALL);
-	}
+    public void onCreateFootballPlayerStats() {
+        generatePlayerStats(SportConstants.SPORT_ID_FOOTBALL);
+    }
 
-	private void generateLeagueStats(int sportId) {
-		List<League> leagues = leagueDAO.getListBySport(sportId);
-		stats = StatsGenerator.generateLeaguesStats(leagues, sportId);
-	}
+    public void onCreateFootballLeagueStats() {
+        generateLeagueStats(SportConstants.SPORT_ID_FOOTBALL);
+    }
 
+    public void onCreateBasketballLeagueStats() {
+        generateLeagueStats(SportConstants.SPORT_ID_BASKETBALL);
+    }
 
+    private void generateLeagueStats(int sportId) {
+        List<League> leagues = leagueDAO.getListBySport(sportId);
+        stats = StatsGenerator.generateLeaguesStats(leagues, sportId);
+		sortStatistics();
+    }
+
+    public void sortStatistics() {
+        sortedStats = new ArrayList<>(stats);
+        Collections.reverse(sortedStats);
+    }
 }

@@ -38,9 +38,16 @@
         <p:commandButton id="footballLeagueStatsId" value="Futbolo lygų top 10"  update="statsListId"
                          action="#{statisticsView.onCreateFootballLeagueStats()}" ajax="true"
                          icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;" />
-        <p:dataList id="statsListId" value="#{statisticsView.stats}" var="entry" type="ordered" emptyMessage="">
-            #{entry.output}
-        </p:dataList>
+        <p:dataTable id="statsListId" value="#{statisticsView.sortedStats}" var="entry"
+                    emptyMessage="" style="margin-bottom:40px"  sortOrder="descending" >
+            <f:facet name="header">
+                Top 10
+            </f:facet>
+            <p:column headerText="Top" sortBy="#{entry.sortKey}">
+                <h:outputText value="#{entry.output}"/>
+            </p:column>
+
+        </p:dataTable>
     </h:form>
 </h:body>
 </html>
