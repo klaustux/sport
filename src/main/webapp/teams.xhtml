@@ -20,8 +20,10 @@
     <h:form id="viewForm" style="width: 1000px">
         <p:growl id="msgs" showDetail="false"/>
         <p:panelGrid columns="4">
-            <p:commandButton id="addInlineButtonId" value="Pridėti inline" action="#{teamView.onRowAdd()}" ajax="false"
-                             icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            <p:commandButton id="addInlineButtonId" value="Pridėti inline" action="#{teamView.onAddInline()}"
+                             icon="ui-icon-check" style="margin-right:10px; float:right;" update="teamsTable"
+                             oncomplete="jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').last().click()});"
+                             ajax="true"/>
             <p:commandButton id="addNewWindowId" value="Pridėti naujam lange" action="addTeam"
                              ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
@@ -31,9 +33,9 @@
             <p:commandButton id="deleteButtonId" value="Trinti" action="#{teamView.onDelete()}" ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
         </p:panelGrid>
-        <p:dataTable id="teams" var="team" value="#{teamView.teams}" editable="true" style="margin-bottom:20px"
+        <p:dataTable id="teamsTable" var="teamString" value="#{teamView.teams}" editable="true" style="margin-bottom:20px"
                      emptyMessage="" selectionMode="single" selection="#{teamView.selectedTeam}"
-                     rowKey="#{team.teamId}">
+                     rowKey="#{teamString.teamId}">
             <f:facet name="header">
                 Komandos
             </f:facet>
@@ -43,9 +45,9 @@
 
             <p:column headerText="Žaista rungtynių">
                 <p:cellEditor>
-                    <f:facet name="output"><h:outputText value="#{team.gamesPlayed}"/></f:facet>
+                    <f:facet name="output"><h:outputText value="#{teamString.gamesPlayed}"/></f:facet>
                     <f:facet name="input">
-                        <p:inputText id="gamesInput" value="#{team.gamesPlayed}" style="width:100%">
+                        <p:inputText id="gamesInput" value="#{teamString.gamesPlayed}" style="width:100%">
                             <f:validateDoubleRange minimum="0"/>
                         </p:inputText>
                     </f:facet>
@@ -55,20 +57,20 @@
 
             <p:column headerText="Pavadinimas">
                 <p:cellEditor>
-                    <f:facet name="output"><h:outputText value="#{team.teamName}"/></f:facet>
-                    <f:facet name="input"><p:inputText value="#{team.teamName}" style="width:100%"
+                    <f:facet name="output"><h:outputText value="#{teamString.teamName}"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{teamString.teamName}" style="width:100%"
                                                        label="Name"/></f:facet>
                 </p:cellEditor>
             </p:column>
 
             <p:column headerText="Sportas">
-                <h:outputText value="#{team.sportName}"/>
+                <h:outputText value="#{teamString.sportName}"/>
             </p:column>
 
             <p:column headerText="Lygos">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <p:dataList value="#{team.leagues}" var="league" itemType="none" emptyMessage="">
+                        <p:dataList value="#{teamString.leagues}" var="league" itemType="none" emptyMessage="">
                             #{league.name}
                         </p:dataList>
                     </f:facet>
@@ -86,7 +88,7 @@
             <p:column style="width:32px">
                 <p:rowEditor/>
                 <p:commandLink id="deleteLink" styleClass="ui-icon ui-icon-trash"
-                               actionListener="#{teamView.deleteTeam(team)}" update="@form" ajax="true"/>
+                               actionListener="#{teamView.deleteTeam(teamString)}" update="@form" ajax="true"/>
 
             </p:column>
 

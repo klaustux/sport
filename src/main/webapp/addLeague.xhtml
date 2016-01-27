@@ -28,8 +28,8 @@
 
                 <p:outputLabel for="teamDropdownId" value="Komandos:"/>
                 <h:selectManyListbox id="teamDropdownId" value="#{leagueView.teams}">
-                    <f:selectItems value="#{leagueView.listTeamsBySport}" var="team" itemValue="#{team.teamId}"
-                                   itemLabel="#{team.teamName}"/>
+                    <f:selectItems value="#{leagueView.listTeamsBySport}" var="teamString" itemValue="#{teamString.teamId}"
+                                   itemLabel="#{teamString.teamName}"/>
                 </h:selectManyListbox>
                 <h:message for="teamDropdownId" id="msgTeamDropdownId" style="color:red"/>
 

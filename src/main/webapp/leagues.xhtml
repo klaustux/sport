@@ -20,25 +20,29 @@
     <h:form id="leagueViewForm" style="width: 1000px">
         <p:growl id="msgs" showDetail="false"/>
         <p:panelGrid id="panelGridId" columns="4">
-            <p:commandButton id="addInlineButtonId" value="Pridėti inline" action="#{leagueView.onRowAdd()}" ajax="false"
+            <p:commandButton id="editButtonId" value="Redaguoti naujam lange" action="#{leagueView.onEditNew}" ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
             <p:commandButton id="addNewWindowId" value="Pridėti naujam lange" action="addLeague"
                              ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
-            <p:button icon="ui-icon-pencil" value="Redaguoti" ajax="true"
-                       onclick="jQuery('.ui-state-highlight').find('span.ui-icon-pencil').click(); return false;"/>
+            <p:button icon="ui-icon-pencil" value="Redaguoti inline" ajax="true"
+                      onclick="jQuery('.ui-state-highlight').find('span.ui-icon-pencil').click(); return false;"/>
 
             <p:commandButton id="deleteButtonId" value="Trinti" action="#{leagueView.onDelete()}" ajax="false"
                              icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
         </p:panelGrid>
-        <p:dataTable id="leagues" var="league" value="#{leagueView.leagues}" editable="true" style="margin-bottom:20px"
+        <p:dataTable id="leagues" var="league" value="#{leagueView.wrappedLeagues}" editable="true"
+                     style="margin-bottom:20px"
                      emptyMessage="" selectionMode="single" selection="#{leagueView.selectedLeague}"
-                     rowKey="#{league.leagueId}"  widgetVar="rowLeagues">
+                     rowKey="#{league.leagueId}" widgetVar="rowLeagues">
             <f:facet name="header">
                 Lygos
             </f:facet>
 
             <p:ajax event="rowEdit" listener="#{leagueView.onRowEdit}" update=":leagueViewForm:msgs"/>
+            <p:ajax event="rowSelect" listener="#{leagueView.onRowSelect}"
+                    update=":leagueViewForm:msgs"/>
+
             <p:ajax event="rowEditCancel" listener="#{leagueView.onRowCancel}" update=":leagueViewForm:msgs"/>
 
             <p:column headerText="Pavadinimas">
@@ -54,8 +58,8 @@
             </p:column>
 
             <p:column headerText="Komandos">
-                <p:dataList value="#{league.teams}" var="team" itemType="none" emptyMessage="">
-                    #{team.teamName}
+                <p:dataList value="#{league.teams}" var="teamString" itemType="none" emptyMessage="">
+                    #{teamString.teamName}
                 </p:dataList>
             </p:column>
 

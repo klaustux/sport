@@ -24,6 +24,16 @@ public class TeamView implements Serializable {
 
     private List<Team> teams;
 
+    private List<Team> persistentTeams;
+
+    public List<Team> getPersistentTeams() {
+        return persistentTeams;
+    }
+
+    public void setPersistentTeams(List<Team> persistentTeams) {
+        this.persistentTeams = persistentTeams;
+    }
+
     private String newTeamName;
 
     private int newTeamGames;
@@ -61,6 +71,7 @@ public class TeamView implements Serializable {
     @PostConstruct
     public void init() {
         teams = teamBean.getList();
+        persistentTeams = teamBean.getList();
         listTeamsBySport = leagueBean.getListBySport(newTeamSport);
     }
 
@@ -178,5 +189,9 @@ public class TeamView implements Serializable {
             return;
         }
         teams = teamBean.getList();
+    }
+
+    public void onAddInline(){
+        teams.add(new Team());
     }
 }

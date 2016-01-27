@@ -4,7 +4,9 @@ import lt.eimis.entity.League;
 import lt.eimis.entity.Team;
 import lt.eimis.persistence.dao.LeagueDAO;
 import lt.eimis.persistence.dao.TeamDAO;
+import lt.eimis.util.SportUtils;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -12,24 +14,20 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.ListDataModel;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ManagedBean(name = "leagueView")
 @ViewScoped
 public class LeagueView implements Serializable {
 
+    ListDataModel<League> wrappedLeagues = new ListDataModel<>();
     private List<League> leagues;
-
     private String newLeagueName;
-
     private int newLeagueGames;
-
     private int newLeagueSport;
-
     private String[] teams;
     private League selectedLeague;
     @ManagedProperty("#{leagueBean}")
@@ -37,6 +35,34 @@ public class LeagueView implements Serializable {
     @ManagedProperty("#{teamBean}")
     private TeamDAO teamDAO;
     private List<Team> listTeamsBySport = new ArrayList<>();
+	private int editId;
+	private String sportName;
+
+	public String getSportName() {
+		return SportUtils.getSportName(newLeagueSport);
+	}
+
+	public void setSportName(String sportName) {
+	}
+
+	public int getEditId() {
+		return editId;
+	}
+
+	public void setEditId(int editId) {
+		League league = leagueDAO.find(editId);
+		newLeagueName = league.getName();
+		newLeagueSport = league.getSportId();
+		this.editId = editId;
+	}
+
+	public ListDataModel<League> getWrappedLeagues() {
+        return wrappedLeagues;
+    }
+
+    public void setWrappedLeagues(ListDataModel<League> wrappedLeagues) {
+        this.wrappedLeagues = wrappedLeagues;
+    }
 
     public League getSelectedLeague() {
         return selectedLeague;
@@ -57,8 +83,11 @@ public class LeagueView implements Serializable {
     @PostConstruct
     public void init() {
         leagues = leagueDAO.getList();
+		wrappedLeagues = new ListDataModel<League>(leagues);
         listTeamsBySport = teamDAO.getListBySport(newLeagueSport);
-    }
+		System.out.println("init selected");
+		System.out.println(editId);
+	}
 
     public List<League> getLeagues() {
         return leagues;
@@ -124,6 +153,7 @@ public class LeagueView implements Serializable {
     public void deleteLeague(League league) {
         leagueDAO.deleteById(league.getLeagueId());
         leagues = leagueDAO.getList();
+		wrappedLeagues = new ListDataModel<League>(leagues);
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -133,22 +163,40 @@ public class LeagueView implements Serializable {
     }
 
     public String onRowAdd() {
-        Set<Team> teamSet = new HashSet<>(0);
+        League newLeague = new League(0, newLeagueName, newLeagueSport);
         if (teams != null) {
             for (String teamId : teams) {
                 Integer id = Integer.valueOf(teamId);
                 Team team = teamDAO.find(id);
-                teamSet.add(team);
+                newLeague.getTeams().add(team);
             }
         }
-        League newLeague = new League(0, newLeagueName, newLeagueSport,
-                teamSet);
-        leagueDAO.add(newLeague);
+
+        leagueDAO.save(newLeague);
         leagues = leagueDAO.getList();
+		wrappedLeagues = new ListDataModel<League>(leagues);
         return "success";
     }
 
-    public void onSportChange() {
+	public String onRowUpdate() {
+		League newLeague = leagueDAO.find(editId);
+		newLeague.setName(newLeagueName);
+//		if (teams != null) {
+//			for (String teamId : teams) {
+//				Integer id = Integer.valueOf(teamId);
+//				Team team = teamDAO.find(id);
+//				newLeague.getTeams().add(team);
+//			}
+//		}
+
+		leagueDAO.save(newLeague);
+		leagues = leagueDAO.getList();
+		wrappedLeagues = new ListDataModel<League>(leagues);
+		return "leagues";
+	}
+
+
+	public void onSportChange() {
         listTeamsBySport = teamDAO.getListBySport(newLeagueSport);
     }
 
@@ -169,6 +217,22 @@ public class LeagueView implements Serializable {
             return;
         }
         leagues = leagueDAO.getList();
+		wrappedLeagues = new ListDataModel<League>(leagues);
     }
+
+    public String onEditNew() {
+
+        if (selectedLeague == null) {
+            FacesMessage msg = new FacesMessage("Pasirinkite lygą redagavimui", null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+		editId = selectedLeague.getLeagueId();
+		return "editLeague?faces-redirect=true&includeViewParams=true";
+    }
+
+
+	public void onRowSelect(SelectEvent event) {
+	}
 
 }

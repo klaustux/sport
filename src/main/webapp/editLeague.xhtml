@@ -2,39 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="editId" value="#{leagueView.editId}"/>
+</f:metadata>
+
 <h:head>
-    <title>Teams</title>
+    <title>Redaguoti lygą</title>
 </h:head>
+
 <h:body>
     <f:view>
         <h:form id="editLeagueForm" style="width: 800px">
             <p:panelGrid columns="3">
                 <h:outputLabel value="Lygos pavadinimas"/>
-                <p:inputText id="leagueName" value="#{leagueView.newLeagueName}" required="true">
+                <p:inputText id="leagueName"  value="#{leagueView.newLeagueName}" required="true">
                     <f:validateLength minimum="1"/>
                 </p:inputText>
                 <p:message for="leagueName" id="msgLastname" display="icon"/>
 
-                <p:outputLabel for="sportId" value="Sportas:"/>
-                <p:selectOneRadio id="sportId" value="#{leagueView.newLeagueSport}">
-                    <f:selectItem itemLabel="Krepšinis" itemValue="0"/>
-                    <f:selectItem itemLabel="Futbolas" itemValue="1"/>
-                    <p:ajax listener="#{leagueView.onSportChange}" update="addLeagueTeamDropdownId"/>
-                </p:selectOneRadio>
-                <h:message for="sportId" id="msgSportId" style="color:red"/>
+                <p:outputLabel value="Sportas:"/>
+                <p:outputLabel value="#{leagueView.sportName}"/>;
 
                 <p:outputLabel for="addLeagueTeamDropdownId" value="Komandos:"/>
                 <h:selectManyListbox id="addLeagueTeamDropdownId" value="#{leagueView.teams}">
-                    <f:selectItems value="#{leagueView.listTeamsBySport}" var="team" itemValue="#{team.teamId}"
-                                   itemLabel="#{team.teamName}"/>
+                    <f:selectItems value="#{leagueView.listTeamsBySport}" var="teamString" itemValue="#{teamString.teamId}"
+                                   itemLabel="#{teamString.teamName}"/>
                 </h:selectManyListbox>
                 <h:message for="addLeagueTeamDropdownId" id="msgAddTeamDropdownId" style="color:red"/>
 
                 <f:facet name="footer">
-                    <p:commandButton id="addBtn" value="Sukurti" action="#{leagueView.onRowAdd()}" ajax="false"
+                    <p:commandButton id="addBtn" value="Sukurti" action="#{leagueView.onRowUpdate()}" ajax="false"
                                      icon="ui-icon-check" validateClient="true"
                                      style="margin-right:10px; float:right;"/>
                 </f:facet>

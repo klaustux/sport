@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+    <f:viewParam name="editId" value="#{playerView.editId}"/>
+</f:metadata>
+
+<h:head>
+    <title>Players</title>
+</h:head>
+<h:body>
+    <f:facet name="last">
+        <h:outputStylesheet library="css" name="custom.css"></h:outputStylesheet>
+    </f:facet>
+
+    <ui:include src="header.xhtml"/>
+
+    <h:form id="newPlayerForm" style="width: 800px">
+        <p:growl id="msgs" showDetail="false"/>
+        <p:panelGrid columns="3">
+            <h:outputLabel value="Vardas:"/>
+            <p:inputText id="firstName" value="#{playerView.newPlayerFirstName}" required="true">
+                <f:validateLength minimum="1"/>
+            </p:inputText>
+            <p:message for="firstName" id="msgFirstName" display="icon"/>
+
+            <h:outputLabel value="Pavardė:"/>
+            <p:inputText id="lastName" value="#{playerView.newPlayerLastName}" required="true">
+                <f:validateLength minimum="1"/>
+            </p:inputText>
+            <p:message for="lastName" id="msgLastName" display="icon"/>
+
+            <p:outputLabel value="Sportas:"/>
+            <p:outputLabel value="#{playerView.sportName}"/>
+            <p:outputLabel value=""/>
+
+            <p:outputLabel for="teamSelectBox" value="Komanda:"/>
+            <h:selectOneListbox id="teamSelectBox" style="width:200px;" value="#{playerView.teamString}">
+                <f:selectItems value="#{playerView.teamList}" var="teamString" itemValue="#{teamString.teamId}"
+                               itemLabel="#{teamString.teamName}"/>
+            </h:selectOneListbox>
+            <h:message for="teamSelectBox" id="msgTeamSelectBox" style="color:red"/>
+
+            <p:outputLabel for="positionId" value="Pozicija:"/>
+            <p:selectOneRadio id="positionId" value="#{playerView.newPlayerPosition}">
+                <f:selectItems value="#{playerView.positionList}" var="positionId" itemValue="#{positionId.positionId}"
+                               itemLabel="#{positionId.positionName}"/>
+            </p:selectOneRadio>
+            <h:message for="positionId" id="msgPosition" style="color:red"/>
+
+            <h:outputLabel for="games" value="Sužaista rungtynių: "/>
+            <h:inputText id="games" value="#{playerView.newPlayerGames}" converter="javax.faces.Integer"
+                         required="true">
+                <f:validateDoubleRange minimum="0" label="Rungtynių skaičius:"/>
+            </h:inputText>
+            <h:message for="games" id="msgGames" style="color:red"/>
+
+            <h:outputLabel for="points" value="Pelnė:"/>
+            <h:inputText id="points" value="#{playerView.newPlayerPoints}" converter="javax.faces.Integer"
+                         required="true">
+                <f:validateDoubleRange minimum="0" label="Taškų skaičius:"/>
+            </h:inputText>
+            <h:message for="points" id="msgPoints" style="color:red"/>
+
+
+            <f:facet name="footer">
+                <p:commandButton id="addBtn" value="Pridėti" action="#{playerView.onRowUpdate()}" ajax="false"
+                                 icon="ui-icon-check" validateClient="true" style="margin-right:10px; float:right;"/>
+            </f:facet>
+        </p:panelGrid>
+    </h:form>
+
+
+</h:body>
+</html>
