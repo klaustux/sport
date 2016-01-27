@@ -4,7 +4,9 @@ import lt.eimis.entity.League;
 import lt.eimis.entity.Team;
 import lt.eimis.persistence.dao.LeagueDAO;
 import lt.eimis.persistence.dao.TeamDAO;
+import lt.eimis.util.SportUtils;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -22,176 +24,233 @@ import java.util.Set;
 @ViewScoped
 public class TeamView implements Serializable {
 
-    private List<Team> teams;
+	private List<Team> teams;
 
-    private List<Team> persistentTeams;
+	private List<Team> persistentTeams;
+	private String newTeamName;
+	private int newTeamGames;
+	private int newTeamSport;
+	private Set<String> leagues = new HashSet<>();
+	private Team selectedTeam;
+	@ManagedProperty("#{teamBean}")
+	private TeamDAO teamDAO;
+	@ManagedProperty("#{leagueBean}")
+	private LeagueDAO leagueDAO;
+	private List<League> listLeaguesBySport = new ArrayList<>();
+	private int editId;
+	private String sportName;
 
-    public List<Team> getPersistentTeams() {
-        return persistentTeams;
-    }
+	public List<Team> getPersistentTeams() {
+		return persistentTeams;
+	}
 
-    public void setPersistentTeams(List<Team> persistentTeams) {
-        this.persistentTeams = persistentTeams;
-    }
+	public void setPersistentTeams(List<Team> persistentTeams) {
+		this.persistentTeams = persistentTeams;
+	}
 
-    private String newTeamName;
+	public Set<String> getLeagues() {
+		return leagues;
+	}
 
-    private int newTeamGames;
+	public void setLeagues(Set<String> leagues) {
+		this.leagues = leagues;
+	}
 
-    private int newTeamSport;
+	public int getEditId() {
+		return editId;
+	}
 
-    private String[] leagues;
+	public void setEditId(int editId) {
+		Team team = teamDAO.find(editId);
+		newTeamGames = team.getGamesPlayed();
+		newTeamName = team.getTeamName();
+		newTeamSport = team.getSportId();
 
-    private Team selectedTeam;
+		Set<String> leagueIds = new HashSet<>();
+		for (League league : team.getLeagues()) {
+			leagueIds.add(String.valueOf(league.getLeagueId()));
+		}
 
-    @ManagedProperty("#{teamBean}")
-    private TeamDAO teamBean;
+		setLeagues(leagueIds);
+		listLeaguesBySport = leagueDAO.getListBySport(newTeamSport);
+		this.editId = editId;
+	}
 
-    @ManagedProperty("#{leagueBean}")
-    private LeagueDAO leagueBean;
+	public String getSportName() {
+		return SportUtils.getSportName(newTeamSport);
+	}
 
-    private List<League> listTeamsBySport = new ArrayList<>();
+	public void setSportName(String sportName) {
+	}
 
-    public Team getSelectedTeam() {
-        return selectedTeam;
-    }
+	public Team getSelectedTeam() {
+		return selectedTeam;
+	}
 
-    public void setSelectedTeam(Team selectedTeam) {
-        this.selectedTeam = selectedTeam;
-    }
+	public void setSelectedTeam(Team selectedTeam) {
+		this.selectedTeam = selectedTeam;
+	}
 
-    public List<League> getListTeamsBySport() {
-        return listTeamsBySport;
-    }
+	public List<League> getlistLeaguesBySport() {
+		return listLeaguesBySport;
+	}
 
-    public void setListTeamsBySport(List<League> listTeamsBySport) {
-        this.listTeamsBySport = listTeamsBySport;
-    }
+	public void setListLeaguesBySport(List<League> listLeaguesBySport) {
+		this.listLeaguesBySport = listLeaguesBySport;
+	}
 
-    @PostConstruct
-    public void init() {
-        teams = teamBean.getList();
-        persistentTeams = teamBean.getList();
-        listTeamsBySport = leagueBean.getListBySport(newTeamSport);
-    }
+	@PostConstruct
+	public void init() {
+		teams = teamDAO.getList();
+		persistentTeams = teamDAO.getList();
+		listLeaguesBySport = leagueDAO.getListBySport(newTeamSport);
+	}
 
-    public List<Team> getTeams() {
-        return teams;
-    }
+	public List<Team> getTeams() {
+		return teams;
+	}
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
+	public void setTeams(List<Team> teams) {
+		this.teams = teams;
+	}
 
-    public String getNewTeamName() {
-        return newTeamName;
-    }
+	public String getNewTeamName() {
+		return newTeamName;
+	}
 
-    public void setNewTeamName(String newTeamName) {
-        this.newTeamName = newTeamName;
-    }
+	public void setNewTeamName(String newTeamName) {
+		this.newTeamName = newTeamName;
+	}
 
-    public int getNewTeamGames() {
-        return newTeamGames;
-    }
+	public int getNewTeamGames() {
+		return newTeamGames;
+	}
 
-    public void setNewTeamGames(int newTeamGames) {
-        this.newTeamGames = newTeamGames;
-    }
+	public void setNewTeamGames(int newTeamGames) {
+		this.newTeamGames = newTeamGames;
+	}
 
-    public int getNewTeamSport() {
-        return newTeamSport;
-    }
+	public int getNewTeamSport() {
+		return newTeamSport;
+	}
 
-    public void setNewTeamSport(int newTeamSport) {
-        this.newTeamSport = newTeamSport;
-    }
+	public void setNewTeamSport(int newTeamSport) {
+		this.newTeamSport = newTeamSport;
+	}
 
-    public LeagueDAO getLeagueBean() {
-        return leagueBean;
-    }
+	public LeagueDAO getLeagueDAO() {
+		return leagueDAO;
+	}
 
-    public void setLeagueBean(LeagueDAO leagueBean) {
-        this.leagueBean = leagueBean;
-    }
+	public void setLeagueDAO(LeagueDAO leagueDAO) {
+		this.leagueDAO = leagueDAO;
+	}
 
-    public String[] getLeagues() {
-        return leagues;
-    }
+	public TeamDAO getTeamDAO() {
+		return teamDAO;
+	}
 
-    public void setLeagues(String[] leagues) {
-        this.leagues = leagues;
-    }
+	public void setTeamDAO(TeamDAO teamDAO) {
+		this.teamDAO = teamDAO;
+	}
 
-    public TeamDAO getTeamBean() {
-        return teamBean;
-    }
+	public void onRowEdit(RowEditEvent event) {
+		Team team = (Team) event.getObject();
+		Set<League> leagueSet = new HashSet<>(0);
+		for (String leagueId : leagues) {
+			Integer id = Integer.valueOf(leagueId);
+			League league = leagueDAO.find(id);
+			leagueSet.add(league);
+		}
+		team.setLeagues(leagueSet);
+		teamDAO.save(team);
+	}
 
-    public void setTeamBean(TeamDAO teamBean) {
-        this.teamBean = teamBean;
-    }
+	public void deleteTeam(Team team) {
+		teamDAO.deleteById(team.getTeamId());
+		teams = teamDAO.getList();
+	}
 
-    public void onRowEdit(RowEditEvent event) {
-        Team team = (Team) event.getObject();
-        Set<League> leagueSet = new HashSet<>(0);
-        for (String leagueId : leagues) {
-            Integer id = Integer.valueOf(leagueId);
-            League league = leagueBean.find(id);
-            leagueSet.add(league);
-        }
-        team.setLeagues(leagueSet);
-        teamBean.save(team);
-    }
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Neberedaguosim",
+				((Team) event.getObject()).getTeamName());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
 
-    public void deleteTeam(Team team) {
-        teamBean.deleteById(team.getTeamId());
-        teams = teamBean.getList();
-    }
+	public void onSportChange() {
+		listLeaguesBySport = leagueDAO.getListBySport(newTeamSport);
+	}
 
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled",
-                ((Team) event.getObject()).getTeamName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+	public String onRowAdd() {
+		Set<League> leagueSet = new HashSet<>(0);
+		for (String leagueIdString : leagues) {
+			Integer id = Integer.valueOf(leagueIdString);
+			League leagueFound = leagueDAO.find(id);
+			leagueSet.add(leagueFound);
+		}
+		Team newTeam = new Team(0, newTeamName, newTeamSport, newTeamGames,
+				leagueSet);
+		teamDAO.save(newTeam);
+		teams = teamDAO.getList();
+		return "success";
+	}
 
-    public void onSportChange() {
-        listTeamsBySport = leagueBean.getListBySport(newTeamSport);
-    }
+	public String onUpdate() {
+		Team team = teamDAO.find(Integer.valueOf(editId));
 
-    public String onRowAdd() {
-        Set<League> leagueSet = new HashSet<>(0);
-        for (String leagueId : leagues) {
-            Integer id = Integer.valueOf(leagueId);
-            League league = leagueBean.find(id);
-            leagueSet.add(league);
-        }
-        Team newTeam = new Team(0, newTeamName, newTeamSport, newTeamGames,
-                leagueSet);
-        teamBean.save(newTeam);
-        teams = teamBean.getList();
-        return "success";
-    }
+		Set<League> leagueSet = new HashSet<>(0);
+		for (String leagueId : leagues) {
+			Integer id = Integer.valueOf(leagueId);
+			League league = leagueDAO.find(id);
+			leagueSet.add(league);
+		}
 
-    public void onDelete() {
-        if (selectedTeam == null) {
-            FacesMessage msg = new FacesMessage(
-                    "Pasirinkite komandą prieš trindami", null);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return;
-        }
-        try {
-            teamBean.deleteById(selectedTeam.getTeamId());
-        }
-        catch (Exception ex) {
-            FacesMessage msg = new FacesMessage(
-                    "Negalima trinti komandos su žaidėjais", null);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return;
-        }
-        teams = teamBean.getList();
-    }
+		team.setTeamName(newTeamName);
+		team.setGamesPlayed(newTeamGames);
+		team.setLeagues(leagueSet);
+		teamDAO.save(team);
+		teams = teamDAO.getList();
+		return "teams";
+	}
 
-    public void onAddInline(){
-        teams.add(new Team());
-    }
+	public void onDelete() {
+		if (selectedTeam == null) {
+			FacesMessage msg = new FacesMessage(
+					"Pasirinkite komandą prieš trindami", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		try {
+			teamDAO.deleteById(selectedTeam.getTeamId());
+		} catch (Exception ex) {
+			FacesMessage msg = new FacesMessage(
+					"Negalima trinti komandos su žaidėjais", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		teams = teamDAO.getList();
+	}
+
+	public String onEditNew() {
+
+		if (selectedTeam == null) {
+			FacesMessage msg = new FacesMessage("Pasirinkite lygą redagavimui",
+					null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return null;
+		}
+		editId = selectedTeam.getTeamId();
+		return "editTeam?faces-redirect=true&includeViewParams=true";
+	}
+
+	public void onRowSelect(SelectEvent event) {
+		newTeamSport = selectedTeam.getSportId();
+		listLeaguesBySport = leagueDAO.getListBySport(newTeamSport);
+	}
+
+	public void onRowEditInit(RowEditEvent event){
+		Team team = (Team) event.getObject();
+		listLeaguesBySport = leagueDAO.getListBySport(team.getSportId());
+	}
+
 }

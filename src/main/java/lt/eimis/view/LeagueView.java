@@ -85,8 +85,6 @@ public class LeagueView implements Serializable {
         leagues = leagueDAO.getList();
 		wrappedLeagues = new ListDataModel<League>(leagues);
         listTeamsBySport = teamDAO.getListBySport(newLeagueSport);
-		System.out.println("init selected");
-		System.out.println(editId);
 	}
 
     public List<League> getLeagues() {

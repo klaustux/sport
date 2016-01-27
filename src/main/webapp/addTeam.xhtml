@@ -38,7 +38,7 @@
 
                     <p:outputLabel for="leagueDropdownAdd" value="Lygos:"/>
                     <h:selectManyListbox id="leagueDropdownAdd" value="#{teamView.leagues}" style="width: 200px;">
-                        <f:selectItems value="#{teamView.listTeamsBySport}" var="league" itemValue="#{league.leagueId}"
+                        <f:selectItems value="#{teamView.listLeaguesBySport}" var="league" itemValue="#{league.leagueId}"
                                        itemLabel="#{league.name}"/>
                     </h:selectManyListbox>
                     <h:message for="leagueDropdownAdd" id="msgLeagues" style="color:red"/>
