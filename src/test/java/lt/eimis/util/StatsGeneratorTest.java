@@ -102,4 +102,11 @@ public class StatsGeneratorTest {
 		StatsGenerator.generateLeagueStatOutput(row);
 		assertEquals(expectedResult, row.getOutput());
 	}
+
+	@Test
+	public void floatTest()
+	{
+		float f = 1f/2;
+		System.out.println(f);
+	}
 }

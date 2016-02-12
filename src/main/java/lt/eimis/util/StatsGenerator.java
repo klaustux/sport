@@ -7,10 +7,9 @@ import lt.eimis.entity.StatisticsRow;
 import lt.eimis.entity.Team;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class StatsGenerator {
     public static final String DELIMITER = ",";
@@ -36,7 +35,13 @@ public class StatsGenerator {
                 float f = row.getResultInt();
                 f = f / row.getGames();
                 row.setSortKey(f);
-                return new DecimalFormat("#.##").format(f);
+                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+                otherSymbols.setDecimalSeparator('.');
+                otherSymbols.setGroupingSeparator(' ');
+                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
+
+                String result = df.format(f);
+                return result;
             }
             else {
                 row.setSortKey(0);
